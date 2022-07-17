@@ -32,7 +32,7 @@ namespace For_English_Words
             forMixAnswer = new string[3];
 
         // номер рядка слова
-        public int IDWords = 0, randomID = 0;
+        public int IDWords = 0, randomID = 0, randomiC = 0;
 
         public Form1()
         {
@@ -141,30 +141,45 @@ namespace For_English_Words
             Excell ex1 = new Excell(pathToFileWords, 1);
             label3.Text = ex1.ReadCell(randomID, 0);
             ex1.CloseFile();
-            Excell ex2 = new Excell(pathToFileTranslate, 1);
-            if (randomID == 0)
+            //Excell ex2 = new Excell(pathToRandomAsnwer, 1);
+
+            //if (randomID == 0)
+            //{
+            //    forMixAnswer[0] = ex2.ReadCell(randomID, 0);
+            //    forMixAnswer[1] = ex2.ReadCell(randomID + 1, 0);
+            //    forMixAnswer[2] = ex2.ReadCell(randomID + 2, 0);
+            //}
+            //else if (randomID == IDWords)
+            //{
+            //    forMixAnswer[0] = ex2.ReadCell(randomID - 2, 0);
+            //    forMixAnswer[1] = ex2.ReadCell(randomID - 1, 0);
+            //    forMixAnswer[2] = ex2.ReadCell(randomID, 0);
+            //}
+            //else
+            //{
+            //    forMixAnswer[0] = ex2.ReadCell(randomID - 1, 0);
+            //    forMixAnswer[1] = ex2.ReadCell(randomID, 0);
+            //    forMixAnswer[2] = ex2.ReadCell(randomID + 1, 0);
+            //}
+            //ex2.CloseFile();
+            Excell excell2 = new Excell(pathToFileTranslate, 1);
+            for (int i = 0; i< forMixAnswer.Length; i++)
             {
-                radioButton1.Text = ex2.ReadCell(randomID, 0);
-                radioButton2.Text = ex2.ReadCell(randomID + 1, 0);
-                radioButton3.Text = ex2.ReadCell(randomID + 2, 0);
+                randomiC = random.Next(IDWords);
+                forMixAnswer[i] = excell2.ReadCell(randomiC, 0);
             }
-            else if (randomID == IDWords)
+            excell2.CloseFile();
+
+            Excell xlsx3 = new Excell(pathToRandomAsnwer, 1);
+            for (int i = 0; i < forMixAnswer.Length; i++)
             {
-                radioButton1.Text = ex2.ReadCell(randomID - 2, 0);
-                radioButton2.Text = ex2.ReadCell(randomID - 1, 0);
-                radioButton3.Text = ex2.ReadCell(randomID, 0);
+                xlsx3.WriteToCell(i, 0, forMixAnswer[i]);
             }
-            else
-            {
-                radioButton1.Text = ex2.ReadCell(randomID - 1, 0);
-                radioButton2.Text = ex2.ReadCell(randomID, 0);
-                radioButton3.Text = ex2.ReadCell(randomID + 1, 0);
-            }
-            ex2.CloseFile();
+            xlsx3.Save();
+            xlsx3.CloseFile();
         }
-
+        
         // записати три відповіді для перемішуання
-
 
         //-------------------------------------------------------------------------------------------
 

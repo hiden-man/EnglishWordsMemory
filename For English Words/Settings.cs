@@ -27,7 +27,7 @@ namespace For_English_Words
         }
         private void MainWindowLocation()
         {
-            Location = new System.Drawing.Point((screenSize.Width/2)-(Size.Width/2),0);
+            Location = new Point((screenSize.Width/2)-(Size.Width/2),0);
         }
 
         // Кнопка приховування вікна налаштування
