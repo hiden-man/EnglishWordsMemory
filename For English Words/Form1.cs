@@ -15,11 +15,11 @@ namespace For_English_Words
         Settings settingsWindow = new Settings();
 
         string defaultPath = @"C:\FEW",
-            pathToFileWords = $@"C:\FEW\English words.xlsx",
-            pathToFileTranslate = $@"C:\FEW\Translate.xlsx",
-            pathCorecctAnswerFile = $@"C:\FEW\Counter of correct answer.xlsx",
-            pathToUncorrectAnswerFile = $@"C:\FEW\Counter of uncorrect answer.xlsx",
-            pathToRandomAsnwer = $@"C:\FEW\Random answer.xlsx",
+            pathToFileWords = $@"C:\FEW\English words.mw",
+            pathToFileTranslate = $@"C:\FEW\Translate.mw",
+            pathToCorecctAnswerFile = $@"C:\FEW\Counter of correct answer.mw",
+            pathToUncorrectAnswerFile = $@"C:\FEW\Counter of uncorrect answer.mw",
+            pathToRandomAsnwer = $@"C:\FEW\Random answer.mw",
             pathToSizeFile = $@"C:\FEW\Number of the words.mw";
 
         string[] defaultWords = {"white","black","orange",
@@ -43,7 +43,7 @@ namespace For_English_Words
             MainWindowLocation();
             CreateDirectoryAndFiles();
             SetIDWord();
-            OutputRandomWord();
+            //OutputRandomWord();
         }
 
         //--------------------------------------------------------------------------------
@@ -70,57 +70,45 @@ namespace For_English_Words
             // Створення файлу для слів
             if (!File.Exists(pathToFileWords))
             {
-                Excell excel3 = new Excell();
-                excel3.CreateNewFile();
-                excel3.SaveAs(pathToFileWords);
-                excel3.CloseFile();
-                Excell exc2 = new Excell(pathToFileWords, 1);
-                for (int i = 0; i < defaultWords.Length; i++)
+                using (StreamWriter sw1 = new StreamWriter(pathToFileWords))
                 {
-                    exc2.WriteToCell(i, 0, defaultWords[i].ToUpper());
-                    IDWords++;
+                    sw1.Write("English Words:");
+                    foreach(string words in defaultWords)
+                    {
+                        sw1.Write($"\n{words}");
+                        IDWords++;
+                    }
+
                 }
-                exc2.Save();
-                exc2.CloseFile();
+                
             }
             // Створення файлу для перекладу
             if (!File.Exists(pathToFileTranslate))
             {
-                Excell exc1 = new Excell();
-                exc1.CreateNewFile();
-                exc1.SaveAs(pathToFileTranslate);
-                exc1.CloseFile();
-                Excell exc3 = new Excell(pathToFileTranslate, 1);
-                for (int i = 0; i < defaultTranslate.Length; i++)
+                using (StreamWriter sw2 = new StreamWriter(pathToFileTranslate))
                 {
-                    exc3.WriteToCell(i, 0, defaultTranslate[i].ToUpper());
+                    sw2.Write("Translate:");
+                    foreach (string translate in defaultTranslate)
+                        sw2.Write($"\n{translate}");
                 }
-                exc3.Save();
-                exc3.CloseFile();
             }
             // Створення ексель файлу для вірних відповідей
-            if (!File.Exists(pathCorecctAnswerFile))
+            if (!File.Exists(pathToCorecctAnswerFile))
             {
-                Excell excel = new Excell();
-                excel.CreateNewFile();
-                excel.SaveAs(pathCorecctAnswerFile);
-                excel.CloseFile();
+                using (FileStream fs1 = new FileStream(pathToCorecctAnswerFile, 
+                    FileMode.Create)){};  
             }
             // Створення ексель файлу для невірних відповідей
             if (!File.Exists(pathToUncorrectAnswerFile))
             {
-                Excell xlsx = new Excell();
-                xlsx.CreateNewFile();
-                xlsx.SaveAs(pathToUncorrectAnswerFile);
-                xlsx.CloseFile();
+                using (FileStream fs2 = new FileStream(pathToUncorrectAnswerFile,
+                    FileMode.Create)){};
             }
             // Створення ексель файлу для перемішування відповідей
             if (!File.Exists(pathToRandomAsnwer))
             {
-                Excell excell1 = new Excell();
-                excell1.CreateNewFile();
-                excell1.SaveAs(pathToRandomAsnwer);
-                excell1.CloseFile();
+                using (FileStream fs3 = new FileStream(pathToRandomAsnwer, 
+                    FileMode.Create)){};
             }
             // Запис кількості слів у текстовий файл
             if (!File.Exists(pathToSizeFile))
@@ -137,46 +125,7 @@ namespace For_English_Words
         // Метод випадкової вибірки слова із списку
         private void OutputRandomWord()
         {
-            randomID = random.Next(IDWords);
-            Excell ex1 = new Excell(pathToFileWords, 1);
-            label3.Text = ex1.ReadCell(randomID, 0);
-            ex1.CloseFile();
-            //Excell ex2 = new Excell(pathToRandomAsnwer, 1);
-
-            //if (randomID == 0)
-            //{
-            //    forMixAnswer[0] = ex2.ReadCell(randomID, 0);
-            //    forMixAnswer[1] = ex2.ReadCell(randomID + 1, 0);
-            //    forMixAnswer[2] = ex2.ReadCell(randomID + 2, 0);
-            //}
-            //else if (randomID == IDWords)
-            //{
-            //    forMixAnswer[0] = ex2.ReadCell(randomID - 2, 0);
-            //    forMixAnswer[1] = ex2.ReadCell(randomID - 1, 0);
-            //    forMixAnswer[2] = ex2.ReadCell(randomID, 0);
-            //}
-            //else
-            //{
-            //    forMixAnswer[0] = ex2.ReadCell(randomID - 1, 0);
-            //    forMixAnswer[1] = ex2.ReadCell(randomID, 0);
-            //    forMixAnswer[2] = ex2.ReadCell(randomID + 1, 0);
-            //}
-            //ex2.CloseFile();
-            Excell excell2 = new Excell(pathToFileTranslate, 1);
-            for (int i = 0; i< forMixAnswer.Length; i++)
-            {
-                randomiC = random.Next(IDWords);
-                forMixAnswer[i] = excell2.ReadCell(randomiC, 0);
-            }
-            excell2.CloseFile();
-
-            Excell xlsx3 = new Excell(pathToRandomAsnwer, 1);
-            for (int i = 0; i < forMixAnswer.Length; i++)
-            {
-                xlsx3.WriteToCell(i, 0, forMixAnswer[i]);
-            }
-            xlsx3.Save();
-            xlsx3.CloseFile();
+            
         }
         
         // записати три відповіді для перемішуання
@@ -193,67 +142,6 @@ namespace For_English_Words
         private void button1_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-    }
-    //--------------------------------------------------------------------------------------------------
-    class Excell
-    {
-        // простий конструктор 
-        public Excell()
-        {
-
-        }
-        // змінна для зберігання шляху до файлу
-        string path = "";
-
-        _Application excel = new _Excel.Application();
-        Workbook wb;
-        Worksheet ws;
-        // конструктор класу який приймає параметри (шлях та номер листа)
-        public Excell(string path, int sheet)
-        {
-            this.path = path;
-            wb = excel.Workbooks.Open(path);
-            ws = wb.Worksheets[sheet];
-
-        }
-        // функція для зчитування данних з файлу
-        public string ReadCell(int i, int j)
-        {
-            i++;
-            j++;
-            if (ws.Cells[i, j].Value2 != null)
-                return ws.Cells[i, j].Value2;
-            else
-                return "";
-        }
-        // запис в комірку
-        public void WriteToCell(int i, int j, string s)
-        {
-            i++;
-            j++;
-            ws.Cells[i, j].Value2 = s;
-        }
-        // зберігання файлу
-        public void Save()
-        {
-            wb.Save();
-        }
-        // зберігання файлу с іншим іменем
-        public void SaveAs(string path1)
-        {
-            wb.SaveAs(path1);
-        }
-        // закриття файлу
-        public void CloseFile()
-        {
-            wb.Close();
-        }
-        // створення нового файлу
-        public void CreateNewFile()
-        {
-            this.wb = excel.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
         }
     }
 }

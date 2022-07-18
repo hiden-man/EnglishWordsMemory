@@ -9,8 +9,8 @@ namespace For_English_Words
     {
         // Поля
         Size screenSize = Screen.PrimaryScreen.Bounds.Size;
-        string pathToFileWords = $@"C:\FEW\English words.xlsx",
-            pathToFileTranslate = $@"C:\FEW\Translate.xlsx",
+        string pathToFileWords = $@"C:\FEW\English words.mw",
+            pathToFileTranslate = $@"C:\FEW\Translate.mw",
             pathToSizeFile = $@"C:\FEW\Number of the words.mw";
 
         private int IDWords = 0;
@@ -59,16 +59,16 @@ namespace For_English_Words
         // та збільшення числа слів на один
         public void WriteWordsAndTranslate()
         {
-            Excell excel2 = new Excell(pathToFileWords, 1);
-            excel2.WriteToCell(IDWords, 0, textBox2.Text.ToUpper());
-            excel2.Save();
-            excel2.CloseFile();
-            Excell excel3 = new Excell(pathToFileTranslate, 1);
-            excel3.WriteToCell(IDWords, 0, textBox1.Text.ToUpper());
-            excel3.Save();
-            excel3.CloseFile();
-            IDWords++;
-            SaveNumberOfSize();
+            //Excell excel2 = new Excell(pathToFileWords, 1);
+            //excel2.WriteToCell(IDWords, 0, textBox2.Text.ToUpper());
+            //excel2.Save();
+            //excel2.CloseFile();
+            //Excell excel3 = new Excell(pathToFileTranslate, 1);
+            //excel3.WriteToCell(IDWords, 0, textBox1.Text.ToUpper());
+            //excel3.Save();
+            //excel3.CloseFile();
+            //IDWords++;
+            //SaveNumberOfSize();
         }
     }
 
