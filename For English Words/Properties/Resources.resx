@@ -121,4 +121,7 @@
   <data name="Settings-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Settings-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="add new word" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add new word.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

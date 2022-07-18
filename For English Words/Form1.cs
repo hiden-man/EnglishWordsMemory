@@ -1,9 +1,8 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿
 using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using _Excel = Microsoft.Office.Interop.Excel;
 
 namespace For_English_Words
 {
@@ -28,11 +27,10 @@ namespace For_English_Words
 
             defaultTranslate = {"білий","чорний","помаранчевий",
             "блакитний","зелений","червоний","коричневий","сірий","рожевий",
-            "жовтий","пурпуровий","фіолетовий","бордовий"},
-            forMixAnswer = new string[3];
+            "жовтий","пурпуровий","фіолетовий","бордовий"};
 
         // номер рядка слова
-        public int IDWords = 0, randomID = 0, randomiC = 0;
+        private int IDWords = 0, randomIDWord = 0;
 
         public Form1()
         {
@@ -75,12 +73,10 @@ namespace For_English_Words
                     sw1.Write("English Words:");
                     foreach(string words in defaultWords)
                     {
-                        sw1.Write($"\n{words}");
+                        sw1.Write($"\n{words.ToUpper()}");
                         IDWords++;
                     }
-
                 }
-                
             }
             // Створення файлу для перекладу
             if (!File.Exists(pathToFileTranslate))
@@ -89,26 +85,26 @@ namespace For_English_Words
                 {
                     sw2.Write("Translate:");
                     foreach (string translate in defaultTranslate)
-                        sw2.Write($"\n{translate}");
+                        sw2.Write($"\n{translate.ToUpper()}");
                 }
             }
-            // Створення ексель файлу для вірних відповідей
+            // Створення файлу для вірних відповідей
             if (!File.Exists(pathToCorecctAnswerFile))
             {
                 using (FileStream fs1 = new FileStream(pathToCorecctAnswerFile, 
                     FileMode.Create)){};  
             }
-            // Створення ексель файлу для невірних відповідей
+            // Створення файлу для невірних відповідей
             if (!File.Exists(pathToUncorrectAnswerFile))
             {
                 using (FileStream fs2 = new FileStream(pathToUncorrectAnswerFile,
                     FileMode.Create)){};
             }
-            // Створення ексель файлу для перемішування відповідей
+            // Створення файлу для перемішування відповідей
             if (!File.Exists(pathToRandomAsnwer))
             {
-                using (FileStream fs3 = new FileStream(pathToRandomAsnwer, 
-                    FileMode.Create)){};
+                using (StreamWriter sw3 = new StreamWriter(pathToRandomAsnwer))
+                    sw3.Write("Random Answer:");
             }
             // Запис кількості слів у текстовий файл
             if (!File.Exists(pathToSizeFile))
@@ -125,9 +121,24 @@ namespace For_English_Words
         // Метод випадкової вибірки слова із списку
         private void OutputRandomWord()
         {
-            
+            using (StreamWriter sw3 = new StreamWriter(pathToRandomAsnwer))
+                sw3.Write("Random Answer:");
+
+            string stringWord = "";
+
+            using (StreamReader sr1 = new StreamReader(pathToFileWords))
+                stringWord = sr1.ReadToEnd();
+
+            string[] wordsArray = stringWord.Split('\n');
+
+            using (StreamWriter sw1 = new StreamWriter(pathToRandomAsnwer, true))
+                for (int i = 0; i < 3; i++)
+                {
+                    sw1.Write($"\n{wordsArray[randomIDWord = random.Next(1, IDWords)]}");
+                }
+
         }
-        
+
         // записати три відповіді для перемішуання
 
         //-------------------------------------------------------------------------------------------
@@ -141,10 +152,18 @@ namespace For_English_Words
         // Close button
         private void button1_Click(object sender, EventArgs e)
         {
+            OutputRandomWord();
             Close();
         }
     }
 }
+
+//// перетворення рядка в масив слів
+// string str = "hi I am a superman"
+//// поділ рядка по символу пробілу
+// string[] strArray = str.Split(' ');
+// foreach (var words in strArray)
+//      Console.WriteLine(words);
 
 //// запис всіх існуючих дисків у системі в список
 //DriveInfo[] ListDrives = DriveInfo.GetDrives();

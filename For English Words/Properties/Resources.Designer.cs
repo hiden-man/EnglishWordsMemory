@@ -63,6 +63,16 @@ namespace For_English_Words.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap add_new_word {
+            get {
+                object obj = ResourceManager.GetObject("add new word", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Settings_1 {
             get {
                 object obj = ResourceManager.GetObject("Settings-1", resourceCulture);

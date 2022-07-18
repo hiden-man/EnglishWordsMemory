@@ -59,16 +59,12 @@ namespace For_English_Words
         // та збільшення числа слів на один
         public void WriteWordsAndTranslate()
         {
-            //Excell excel2 = new Excell(pathToFileWords, 1);
-            //excel2.WriteToCell(IDWords, 0, textBox2.Text.ToUpper());
-            //excel2.Save();
-            //excel2.CloseFile();
-            //Excell excel3 = new Excell(pathToFileTranslate, 1);
-            //excel3.WriteToCell(IDWords, 0, textBox1.Text.ToUpper());
-            //excel3.Save();
-            //excel3.CloseFile();
-            //IDWords++;
-            //SaveNumberOfSize();
+            using (StreamWriter sw1 = new StreamWriter(pathToFileWords, true))
+                sw1.Write($"\n{textBox1.Text.ToUpper()}");
+            using (StreamWriter sw2 = new StreamWriter(pathToFileTranslate, true))
+                sw2.Write($"\n{textBox2.Text.ToUpper()}");
+            IDWords++;
+            SaveNumberOfSize();
         }
     }
 
