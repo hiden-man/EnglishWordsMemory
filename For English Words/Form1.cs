@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -28,7 +27,7 @@ namespace For_English_Words
 
             defaultTranslate = {"білий","чорний","помаранчевий",
             "блакитний","зелений","червоний","коричневий","сірий","рожевий",
-            "жовтий","пурпуровий","фіолетовий","бордовий"};
+            "жовтий","пурпурний","фіолетовий","бордовий"};
 
         // номер рядка слова
         private int IDWords = 0, IDTranslate = 0, randomIDWord = 0;
@@ -37,6 +36,8 @@ namespace For_English_Words
         {
             InitializeComponent();
         }
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
             MainWindowLocation();
@@ -67,7 +68,7 @@ namespace For_English_Words
             // Створення дерикторії
             Directory.CreateDirectory(defaultPath);
 
-            // перевірка на навність необхідних файлів
+            // Перевірка на навність необхідних файлів
             // Створення файлу для слів
             if (!File.Exists(pathToFileWords))
                 using (StreamWriter sw1 = new StreamWriter(pathToFileWords))
@@ -128,7 +129,7 @@ namespace For_English_Words
 
             using (StreamReader sr1 = new StreamReader(pathToFileWords))
                 stringWord = sr1.ReadToEnd();
-            randomIDWord = random.Next(1, IDWords);
+            randomIDWord = random.Next(0, IDWords);
             string[] wordsArray = stringWord.Split('\n');
             label3.Text = wordsArray[randomIDWord];
         }
@@ -148,63 +149,133 @@ namespace For_English_Words
             // Запис відповідей у файл відповідей
             using (StreamWriter sw1 = new StreamWriter(pathToRandomAsnwer, true))
             {
-                if (randomIDWord <= 1)
+                if (randomIDWord <= 0)
                 {
                     sw1.WriteLine($"{translateArray[randomIDWord]}");
                     sw1.WriteLine($"{translateArray[randomIDWord + 1]}");
                     sw1.Write($"{translateArray[randomIDWord + 2]}");
                 }
-                else if (randomIDWord == IDWords)
+                if (randomIDWord == IDWords)
                 {
-                    sw1.WriteLine($"{translateArray[randomIDWord]}");
-                    sw1.WriteLine($"{translateArray[randomIDWord - 1]}");
-                    sw1.Write($"{translateArray[randomIDWord - 2]}");
+                    sw1.WriteLine($"{translateArray[randomIDWord-1]}");
+                    sw1.WriteLine($"{translateArray[randomIDWord - 2]}");
+                    sw1.Write($"{translateArray[randomIDWord - 3]}");
                 }
-                else
+                if(randomIDWord > 0 & randomIDWord < IDWords)
                 {
                     sw1.WriteLine($"{translateArray[randomIDWord - 1]}");
-                    sw1.WriteLine($"{translateArray[randomIDWord]}");
-                    sw1.Write($"{translateArray[randomIDWord + 1]}");
+                    sw1.WriteLine($"{translateArray[randomIDWord + 1]}");
+                    sw1.Write($"{translateArray[randomIDWord]}");
                 }
             }
-            // запис відповідей із файла у рядок
+            // Запис відповідей із файла у рядок
             using (StreamReader sr2 = new StreamReader(pathToRandomAsnwer))
                 stringTranslate = sr2.ReadToEnd();
-
+            // Перетворення текстового рядку у масив
             translateArray = stringTranslate.Split('\n');
+            // Генерація випадкових неповторних чисел
             random = new Random(DateTime.Now.Millisecond);
+            // Перемішування комірок в масиві
             translateArray = translateArray.OrderBy(x => random.Next()).ToArray();
-            for (int i = 0; i < translateArray.Length; i++)
-                richTextBox1.Text += translateArray[i] + "\n";
+            // Вивод відповідей
+            radioButton1.Text = translateArray[0];
+            radioButton2.Text = translateArray[1];
+            radioButton3.Text = translateArray[2];
+        }
 
+        private void CheckCorrectAnswer()
+        {
+            string str1 = "";
+            using (StreamReader sr4 = new StreamReader(pathToFileTranslate))
+                str1 = sr4.ReadToEnd();
+            string[] corrAnswer = str1.Split('\n');
 
+            if (radioButton1.Checked)
+            {
+                if (radioButton1.Text == corrAnswer[randomIDWord])
+                {
+                    radioButton1.ForeColor = Color.LimeGreen;
+                    radioButton2.ForeColor = Color.Red;
+                    radioButton3.ForeColor = Color.Red;
+                }
+                if(radioButton2.Text == corrAnswer[randomIDWord])
+                {
+                    radioButton1.ForeColor = Color.Red;
+                    radioButton2.ForeColor = Color.LimeGreen;
+                    radioButton3.ForeColor = Color.Red;
+                }
+                if (radioButton3.Text == corrAnswer[randomIDWord])
+                {
+                    radioButton1.ForeColor = Color.Red;
+                    radioButton3.ForeColor = Color.LimeGreen;
+                    radioButton2.ForeColor = Color.Red;
+                }
 
+            }
 
-            //string[] test = {"elder","hidenman","dersten","kudahi","lutique","sikama" };
-            //random = new Random(DateTime.Now.Millisecond);
-            //for(int i = 0; i < test.Length; i++)
-            //    richTextBox1.Text += test[i] + "\n";
-
-            //test = test.OrderBy(x => random.Next()).ToArray();
-            //for(int i = 0; i < test.Length; i++)
-            //    richTextBox2.Text += test[i] + "\n";
+            if (radioButton2.Checked)
+            {
+                if (radioButton1.Text == corrAnswer[randomIDWord])
+                {
+                    radioButton1.ForeColor = Color.LimeGreen;
+                    radioButton2.ForeColor = Color.Red;
+                    radioButton3.ForeColor = Color.Red;
+                }
+                if (radioButton2.Text == corrAnswer[randomIDWord])
+                {
+                    radioButton1.ForeColor = Color.Red;
+                    radioButton2.ForeColor = Color.LimeGreen;
+                    radioButton3.ForeColor = Color.Red;
+                }
+                if (radioButton3.Text == corrAnswer[randomIDWord])
+                {
+                    radioButton1.ForeColor = Color.Red;
+                    radioButton3.ForeColor = Color.LimeGreen;
+                    radioButton2.ForeColor = Color.Red;
+                }
+            }
+            if (radioButton3.Checked)
+            {
+                if (radioButton1.Text == corrAnswer[randomIDWord])
+                {
+                    radioButton1.ForeColor = Color.LimeGreen;
+                    radioButton2.ForeColor = Color.Red;
+                    radioButton3.ForeColor = Color.Red;
+                }
+                if (radioButton2.Text == corrAnswer[randomIDWord])
+                {
+                    radioButton1.ForeColor = Color.Red;
+                    radioButton2.ForeColor = Color.LimeGreen;
+                    radioButton3.ForeColor = Color.Red;
+                }
+                if (radioButton3.Text == corrAnswer[randomIDWord])
+                {
+                    radioButton1.ForeColor = Color.Red;
+                    radioButton3.ForeColor = Color.LimeGreen;
+                    radioButton2.ForeColor = Color.Red;
+                }
+            }
 
         }
 
-        // записати три відповіді для перемішуання
-
         //-------------------------------------------------------------------------------------------
 
+        // Кнопка відповіді
+        private void button2_Click(object sender, EventArgs e)
+        {
+            CheckCorrectAnswer();
+        }
+
         // Кнопка налаштування
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
             settingsWindow.Show();
         }
 
+        
         // Close button
         private void button1_Click(object sender, EventArgs e)
         {
-            OutputRandomWord();
             Close();
         }
     }

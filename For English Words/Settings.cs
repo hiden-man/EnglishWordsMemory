@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace For_English_Words
@@ -47,6 +48,13 @@ namespace For_English_Words
         private void button2_Click(object sender, EventArgs e)
         {
             WriteWordsAndTranslate();
+            label3.Font = new Font("Microsoft Sans Serif", 
+                20.25F, FontStyle.Bold, 
+                GraphicsUnit.Point, ((byte)(204)));
+            label3.Text = "saved";
+            label3.ForeColor = Color.LimeGreen;
+
+
         }
         // Метод створення файлу та запис кількості англійських слів 
         public void SaveNumberOfSize()
