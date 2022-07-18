@@ -31,7 +31,7 @@ namespace For_English_Words
             "жовтий","пурпуровий","фіолетовий","бордовий"};
 
         // номер рядка слова
-        private int IDWords = 0, randomIDWord = 0;
+        private int IDWords = 0, IDTranslate = 0, randomIDWord = 0;
 
         public Form1()
         {
@@ -72,17 +72,29 @@ namespace For_English_Words
             if (!File.Exists(pathToFileWords))
                 using (StreamWriter sw1 = new StreamWriter(pathToFileWords))
                 {
-                    foreach(string words in defaultWords)
+                    foreach (string words in defaultWords)
                     {
-                        sw1.Write($"\n{words.ToUpper()}");
+                        if (IDWords == 0)
+                            sw1.Write($"{words.ToUpper()}");
+                        else
+                            sw1.Write($"\n{words.ToUpper()}");
                         IDWords++;
                     }
                 }
+
             // Створення файлу для перекладу
             if (!File.Exists(pathToFileTranslate))
                 using (StreamWriter sw2 = new StreamWriter(pathToFileTranslate))
                     foreach (string translate in defaultTranslate)
-                        sw2.Write($"\n{translate.ToUpper()}");
+                    {
+                        if (IDTranslate == 0)
+                            sw2.Write($"{translate.ToUpper()}");
+                        else
+                            sw2.Write($"\n{translate.ToUpper()}");
+                        IDTranslate++;
+                    }
+
+
 
             // Створення файлу для вірних відповідей
             if (!File.Exists(pathToCorecctAnswerFile))
@@ -105,7 +117,7 @@ namespace For_English_Words
         public void SaveNumberOfSize()
         {
             using (StreamWriter sw = new StreamWriter(pathToSizeFile))
-                sw.WriteLine(IDWords);
+                sw.Write($"{IDWords}");
             SetIDWord();
         }
 
@@ -124,8 +136,7 @@ namespace For_English_Words
         // Метод виводу відповідей 
         private void OutputAnswer()
         {
-            using (StreamWriter sw3 = new StreamWriter(pathToRandomAsnwer))
-                sw3.Write("Random Answer:");
+            using (FileStream fs3 = new FileStream(pathToRandomAsnwer,FileMode.Create)) { };
 
             string stringTranslate = "";
             // Запис перекладів слів у рядок
@@ -139,21 +150,21 @@ namespace For_English_Words
             {
                 if (randomIDWord <= 1)
                 {
-                    sw1.Write($"\n{translateArray[randomIDWord]}");
-                    sw1.Write($"\n{translateArray[randomIDWord + 1]}");
-                    sw1.Write($"\n{translateArray[randomIDWord + 2]}");
+                    sw1.WriteLine($"{translateArray[randomIDWord]}");
+                    sw1.WriteLine($"{translateArray[randomIDWord + 1]}");
+                    sw1.Write($"{translateArray[randomIDWord + 2]}");
                 }
                 else if (randomIDWord == IDWords)
                 {
-                    sw1.Write($"\n{translateArray[randomIDWord]}");
-                    sw1.Write($"\n{translateArray[randomIDWord - 1]}");
-                    sw1.Write($"\n{translateArray[randomIDWord - 2]}");
+                    sw1.WriteLine($"{translateArray[randomIDWord]}");
+                    sw1.WriteLine($"{translateArray[randomIDWord - 1]}");
+                    sw1.Write($"{translateArray[randomIDWord - 2]}");
                 }
                 else
                 {
-                    sw1.Write($"\n{translateArray[randomIDWord - 1]}");
-                    sw1.Write($"\n{translateArray[randomIDWord]}");
-                    sw1.Write($"\n{translateArray[randomIDWord + 1]}");
+                    sw1.WriteLine($"{translateArray[randomIDWord - 1]}");
+                    sw1.WriteLine($"{translateArray[randomIDWord]}");
+                    sw1.Write($"{translateArray[randomIDWord + 1]}");
                 }
             }
             // запис відповідей із файла у рядок
