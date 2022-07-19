@@ -19,6 +19,7 @@ namespace For_English_Words
             pathToCorecctAnswerFile = $@"C:\FEW\Counter of correct answer.mw",
             pathToUncorrectAnswerFile = $@"C:\FEW\Counter of uncorrect answer.mw",
             pathToRandomAsnwer = $@"C:\FEW\Random answer.mw",
+            pathToSwitchIndex = $@"C:\FEW\Switch index.mw",
             pathToSizeFile = $@"C:\FEW\Number of the words.mw";
 
         string[] defaultWords = {"white","black","orange",
@@ -31,7 +32,8 @@ namespace For_English_Words
 
         // номер рядка слова
         private int IDWords = 0, IDTranslate = 0, randomIDWord = 0, 
-            correctItem = 0, uncorrectItem = 0, countWordsPosition = 1;
+            correctItem = 0, uncorrectItem = 0, countWordsPosition = 1,
+            counter2 = 0;
 
         public Form1()
         {
@@ -46,17 +48,65 @@ namespace For_English_Words
             SetIDWord();
             OutputRandomWord();
             OutputAnswer();
-            WriteNumberOfCorrectAndUncorrectAnswers();
+            WriteNumberOfCorrectAnswers();
         }
 
 
         //--------------------------------------------------------------------------------
 
-        // Метод запису кількості правильних відповідей
-        private void WriteNumberOfCorrectAndUncorrectAnswers()
+        // Метод запису кількості правельних відповідей
+        private void WriteNumberOfCorrectAnswers()
+        {
+            if (!File.Exists(pathToSwitchIndex))
+            {
+                using (FileStream fs = new FileStream(pathToSwitchIndex, FileMode.Create)) { };
+                string str1 = "";
+                using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
+                    str1 = streamReader.ReadToEnd();
+                string[] str1Array = str1.Split('\n');
+                str1Array[randomIDWord] = $"{randomIDWord + 1}: {random.Next(50)}";
+                using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
+                    for(int i = 0; i < str1Array.Length; i++)
+                        if(i == 0)
+                            streamWriter.Write(str1Array[i]);
+                        else
+                            streamWriter.Write($"\n{str1Array[i]}");
+
+            }
+            else
+            {
+                string str1 = "";
+                using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
+                    str1 = streamReader.ReadToEnd();
+                string[] str1Array = str1.Split('\n');
+                str1Array[randomIDWord] = $"{randomIDWord + 1}: {random.Next(50)}";
+                if (randomIDWord == 0)
+                    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
+                    {
+                        for (int i = 0; i < str1Array.Length; i++)
+                            if (counter2 == 0)
+                            {
+                                streamWriter.Write($"{str1Array[i]}");
+                                counter2++;
+                            }
+                            else
+                                streamWriter.Write($"\n{str1Array[i]}");
+                    }
+                else
+                    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
+                        for (int i = 0; i < str1Array.Length; i++)
+                            if(i == 0)
+                                streamWriter.Write($"{str1Array[i]}");
+                            else
+                                streamWriter.Write($"\n{str1Array[i]}");
+            }
+        }
+
+        // Метод запису кількості неправельних відповідей
+        private void WriteNumberOfUncorrectAnswers()
         {
             // приклад дроблення рядка в масив та запис як двох мірної таблиці
-            string str = $"{randomIDWord+1}: {random.Next(0,101)}";
+            string str = $"{randomIDWord + 1}: {uncorrectItem}";
             string[] strArray = str.Split(' ');
             for (int i = 0; i < strArray.Length; i++)
             {
@@ -90,7 +140,7 @@ namespace For_English_Words
             // Створення файлу для слів
             if (!File.Exists(pathToFileWords))
                 using (StreamWriter sw1 = new StreamWriter(pathToFileWords))
-                {
+                    // запис дефолтних слів
                     foreach (string words in defaultWords)
                     {
                         if (IDWords == 0)
@@ -99,13 +149,13 @@ namespace For_English_Words
                             sw1.Write($"\n{words.ToUpper()}");
                         IDWords++;
                     }
-                }
 
             // Створення файлу для перекладу
             if (!File.Exists(pathToFileTranslate))
                 using (StreamWriter sw2 = new StreamWriter(pathToFileTranslate))
-                    foreach (string translate in defaultTranslate)
-                    {
+                    // запис дефолтних перекладів
+                    foreach (string translate in defaultTranslate) 
+                    { 
                         if (IDTranslate == 0)
                             sw2.Write($"{translate.ToUpper()}");
                         else
@@ -113,19 +163,29 @@ namespace For_English_Words
                         IDTranslate++;
                     }
 
-
-
             // Створення файлу для вірних відповідей
             if (!File.Exists(pathToCorecctAnswerFile))
-                using (FileStream fs1 = new FileStream(pathToCorecctAnswerFile, FileMode.Create)){};
+                using (StreamWriter sw3 = new StreamWriter(pathToCorecctAnswerFile))
+                    // нумерація комірок
+                    for (int i = 0; i < IDWords; i++)
+                        if (i == 0)
+                            sw3.Write($"{i+1}:");
+                        else
+                            sw3.Write($"\n{i+1}:");
 
             // Створення файлу для невірних відповідей
             if (!File.Exists(pathToUncorrectAnswerFile))
-                using (FileStream fs2 = new FileStream(pathToUncorrectAnswerFile, FileMode.Create)){};
+                using (StreamWriter sw4 = new StreamWriter(pathToUncorrectAnswerFile))
+                    // нумерація комірок
+                    for (int i = 0; i < IDWords; i++)
+                        if (i == 0)
+                            sw4.Write($"{i+1}:");
+                        else
+                            sw4.Write($"\n{i+1}:");
 
             // Створення файлу для перемішування відповідей
             if (!File.Exists(pathToRandomAsnwer))
-                using (FileStream sw3 = new FileStream(pathToRandomAsnwer, FileMode.Create)) { };
+                using (FileStream fs3 = new FileStream(pathToRandomAsnwer, FileMode.Create)) { };
 
             // Запис кількості слів у текстовий файл
             if (!File.Exists(pathToSizeFile))
@@ -147,7 +207,7 @@ namespace For_English_Words
 
             using (StreamReader sr1 = new StreamReader(pathToFileWords))
                 stringWord = sr1.ReadToEnd();
-            randomIDWord = random.Next(0, IDWords);
+            randomIDWord = random.Next(IDWords);
             string[] wordsArray = stringWord.Split('\n');
             label3.Text = wordsArray[randomIDWord];
         }
@@ -165,9 +225,9 @@ namespace For_English_Words
             // Перетворення рядка перекладів слів у масив
             string[] translateArray = stringTranslate.Split('\n');
             // Запис відповідей у файл відповідей
-            using (StreamWriter sw1 = new StreamWriter(pathToRandomAsnwer, true))
+            using (StreamWriter sw1 = new StreamWriter(pathToRandomAsnwer, true)) // ???!!!!!!!!
             {
-                if (randomIDWord <= 0)
+                if (randomIDWord == 0)
                 {
                     sw1.WriteLine($"{translateArray[randomIDWord]}");
                     sw1.WriteLine($"{translateArray[randomIDWord + 1]}");
@@ -179,22 +239,23 @@ namespace For_English_Words
                     sw1.WriteLine($"{translateArray[randomIDWord - 2]}");
                     sw1.Write($"{translateArray[randomIDWord - 3]}");
                 }
-                if(randomIDWord > 0 & randomIDWord < IDWords)
+                if(randomIDWord >=2 & randomIDWord < IDWords)
                 {
+                    sw1.WriteLine($"{translateArray[randomIDWord]}");
                     sw1.WriteLine($"{translateArray[randomIDWord - 1]}");
-                    sw1.WriteLine($"{translateArray[randomIDWord + 1]}");
-                    sw1.Write($"{translateArray[randomIDWord]}");
+                    sw1.Write($"{translateArray[randomIDWord-2]}");
                 }
             }
             // Запис відповідей із файла у рядок
+            string stringTranslate2 = "";
             using (StreamReader sr2 = new StreamReader(pathToRandomAsnwer))
-                stringTranslate = sr2.ReadToEnd();
+                stringTranslate2 = sr2.ReadToEnd();
             // Перетворення текстового рядку у масив
-            translateArray = stringTranslate.Split('\n');
+            string[] translateArray2 = stringTranslate.Split('\n');
             // Генерація випадкових неповторних чисел
             random = new Random(DateTime.Now.Millisecond);
             // Перемішування комірок в масиві
-            translateArray = translateArray.OrderBy(x => random.Next()).ToArray();
+            translateArray = translateArray.OrderBy(x => random.Next()).ToArray(); // ???!!!!!!!!
             // Вивод відповідей
             radioButton1.Text = translateArray[0];
             radioButton2.Text = translateArray[1];

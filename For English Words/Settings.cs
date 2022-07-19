@@ -12,7 +12,9 @@ namespace For_English_Words
         Size screenSize = Screen.PrimaryScreen.Bounds.Size;
         string pathToFileWords = $@"C:\FEW\English words.mw",
             pathToFileTranslate = $@"C:\FEW\Translate.mw",
-            pathToSizeFile = $@"C:\FEW\Number of the words.mw";
+            pathToSizeFile = $@"C:\FEW\Number of the words.mw",
+            pathToCorecctAnswerFile = $@"C:\FEW\Counter of correct answer.mw",
+            pathToUncorrectAnswerFile = $@"C:\FEW\Counter of uncorrect answer.mw";
 
         private int IDWords = 0;
 
@@ -53,6 +55,8 @@ namespace For_English_Words
                 GraphicsUnit.Point, ((byte)(204)));
             label3.Text = "saved";
             label3.ForeColor = Color.LimeGreen;
+            textBox1.Text = "";
+            textBox2.Text = "";
 
 
         }
@@ -71,6 +75,10 @@ namespace For_English_Words
                 sw1.Write($"\n{textBox1.Text.ToUpper()}");
             using (StreamWriter sw2 = new StreamWriter(pathToFileTranslate, true))
                 sw2.Write($"\n{textBox2.Text.ToUpper()}");
+            using (StreamWriter sw3 = new StreamWriter(pathToCorecctAnswerFile, true))
+                sw3.Write($"\n{IDWords}:");
+            using (StreamWriter sw4 = new StreamWriter(pathToUncorrectAnswerFile, true))
+                sw4.Write($"\n{IDWords}:");
             IDWords++;
             SaveNumberOfSize();
         }
