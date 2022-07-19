@@ -30,7 +30,8 @@ namespace For_English_Words
             "жовтий","пурпурний","фіолетовий","бордовий"};
 
         // номер рядка слова
-        private int IDWords = 0, IDTranslate = 0, randomIDWord = 0;
+        private int IDWords = 0, IDTranslate = 0, randomIDWord = 0, 
+            correctItem = 0, uncorrectItem = 0, countWordsPosition = 1;
 
         public Form1()
         {
@@ -45,10 +46,27 @@ namespace For_English_Words
             SetIDWord();
             OutputRandomWord();
             OutputAnswer();
+            WriteNumberOfCorrectAndUncorrectAnswers();
         }
 
 
         //--------------------------------------------------------------------------------
+
+        // Метод запису кількості правильних відповідей
+        private void WriteNumberOfCorrectAndUncorrectAnswers()
+        {
+            // приклад дроблення рядка в масив та запис як двох мірної таблиці
+            string str = $"{randomIDWord+1}: {random.Next(0,101)}";
+            string[] strArray = str.Split(' ');
+            for (int i = 0; i < strArray.Length; i++)
+            {
+                if ((countWordsPosition % 2) != 0)
+                    richTextBox1.Text += $"{strArray[i]} ";
+                if ((countWordsPosition % 2) == 0)
+                    richTextBox1.Text += $"{strArray[i]}\n";
+                countWordsPosition++;
+            }
+        }
 
         private void MainWindowLocation()
         {
