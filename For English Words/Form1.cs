@@ -64,7 +64,7 @@ namespace For_English_Words
                 using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
                     str1 = streamReader.ReadToEnd();
                 string[] str1Array = str1.Split('\n');
-                str1Array[randomIDWord] = $"{randomIDWord + 1}: {random.Next(50)}";
+                str1Array[randomIDWord] = $"{randomIDWord + 1}: {correctItem}";
                 using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
                     for(int i = 0; i < str1Array.Length; i++)
                         if(i == 0)
@@ -79,7 +79,7 @@ namespace For_English_Words
                 using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
                     str1 = streamReader.ReadToEnd();
                 string[] str1Array = str1.Split('\n');
-                str1Array[randomIDWord] = $"{randomIDWord + 1}: {random.Next(50)}";
+                str1Array[randomIDWord] = $"{randomIDWord + 1}: {correctItem}";
                 if (randomIDWord == 0)
                     using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
                     {
@@ -169,9 +169,9 @@ namespace For_English_Words
                     // нумерація комірок
                     for (int i = 0; i < IDWords; i++)
                         if (i == 0)
-                            sw3.Write($"{i+1}:");
+                            sw3.Write($"{i+1}: {correctItem}");
                         else
-                            sw3.Write($"\n{i+1}:");
+                            sw3.Write($"\n{i+1}: {correctItem}");
 
             // Створення файлу для невірних відповідей
             if (!File.Exists(pathToUncorrectAnswerFile))
@@ -179,9 +179,9 @@ namespace For_English_Words
                     // нумерація комірок
                     for (int i = 0; i < IDWords; i++)
                         if (i == 0)
-                            sw4.Write($"{i+1}:");
+                            sw4.Write($"{i+1}: {uncorrectItem}");
                         else
-                            sw4.Write($"\n{i+1}:");
+                            sw4.Write($"\n{i+1}: {uncorrectItem}");
 
             // Створення файлу для перемішування відповідей
             if (!File.Exists(pathToRandomAsnwer))
