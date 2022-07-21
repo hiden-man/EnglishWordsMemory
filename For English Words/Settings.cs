@@ -63,9 +63,9 @@ namespace For_English_Words
         public void WriteWordsAndTranslate()
         {
             using (StreamWriter sw1 = new StreamWriter(pathToFileWords, true))
-                sw1.Write($"\n{textBox1.Text.ToUpper()}");
+                sw1.Write($"\n{textBox1.Text.ToLower()}");
             using (StreamWriter sw2 = new StreamWriter(pathToFileTranslate, true))
-                sw2.Write($"\n{textBox2.Text.ToUpper()}");
+                sw2.Write($"\n{textBox2.Text.ToLower()}");
             using (StreamWriter sw3 = new StreamWriter(pathToCorecctAnswerFile, true))
                 sw3.Write($"\n{IDWords}: {0}");
             using (StreamWriter sw4 = new StreamWriter(pathToUncorrectAnswerFile, true))

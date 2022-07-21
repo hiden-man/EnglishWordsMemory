@@ -36,7 +36,7 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label3
@@ -129,21 +129,26 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // richTextBox1
+            // button4
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(8, 125);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(171, 212);
-            this.richTextBox1.TabIndex = 10;
-            this.richTextBox1.Text = "";
+            this.button4.BackColor = System.Drawing.Color.Transparent;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button4.ForeColor = System.Drawing.Color.Red;
+            this.button4.Location = new System.Drawing.Point(310, 74);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(61, 36);
+            this.button4.TabIndex = 9;
+            this.button4.Text = "Refresh";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.ClientSize = new System.Drawing.Size(442, 349);
-            this.Controls.Add(this.richTextBox1);
+            this.ClientSize = new System.Drawing.Size(442, 116);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
@@ -170,7 +175,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button button4;
     }
 }
 

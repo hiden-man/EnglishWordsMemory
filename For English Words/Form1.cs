@@ -24,112 +24,56 @@ namespace For_English_Words
         string[] defaultWords = {
             "white","black","orange","blue","green","red","brown","gray","pink","yellow","magenta","purple",
             "maroon","advice","agree","urgently","continue","meet","rarely","colleagues","classmate","neighbors",
-            "husband","wife","get","expensive","perfectly","better","mistakes","effectively","take","useful"},
+            "husband","wife","get","expensive","perfectly","better","mistakes","effectively","take","useful",
+            "workers","offer","ticket","mean","explain","speak","spend","strange","grow","garden","suppliers",
+            "situation","answer","clients","hate","swim","promise","refuse"},
 
             defaultTranslate = {
             "білий","чорний","помаранчевий","блакитний","зелений","червоний","коричневий","сірий","рожевий",
             "жовтий","пурпурний","фіолетовий","бордовий","порада","згоден","терміново","продовжити","зустріч",
             "рідко","колеги","однокласник","сусіди","чоловік","дружина","отримувати","дорого","прекрасно",
-            "краще","помилки","ефективно","брати","корисно"};
+            "краще","помилки","ефективно","брати","корисно","робітники","пропозиція","білет","означати",
+            "пояснювати","говорити","проводити","дивний","вирощувати","сад","постачальники","ситуація","відповідь",
+            "кліенти","ненавидіти","плавати","обіцяти","відмова"};
 
-        private int IDWords = 0, IDTranslate = 0, randomIDWord = 0,
-            correctItem = 0, uncorrectItem = 0, countWordsPosition = 1,
+        private int 
+            IDWords = 0, IDTranslate = 0, randomIDWord = 0,
+            correctItem = 0, uncorrectItem = 0,
             counter2 = 0, randomChoise = 0;
-
         public Form1()
         {
             InitializeComponent();
         }
 
-
         private void Form1_Load(object sender, EventArgs e)
         {
             MainWindowLocation();
+            Repetition();
+            //WriteNumberOfCorrectAnswers();
+        }
+        // МЕТОДИ !!!!!
+        //---------------------------------------------------------------------------------------------------------
+        // Метод повтору
+        private void Repetition()
+        {
             CreateDirectoryAndFiles();
             SetIDWord();
             OutputRandomWord();
             OutputAnswer();
-            //WriteNumberOfCorrectAnswers();
         }
-
-
-        //--------------------------------------------------------------------------------
-
-        // Метод запису кількості правельних відповідей
-        private void WriteNumberOfCorrectAnswers()
-        {
-            if (!File.Exists(pathToSwitchIndex))
-            {
-                using (FileStream fs = new FileStream(pathToSwitchIndex, FileMode.Create)) { };
-                string str1 = "";
-                using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
-                    str1 = streamReader.ReadToEnd();
-                string[] str1Array = str1.Split('\n');
-                str1Array[randomIDWord] = $"{randomIDWord + 1}: {correctItem}";
-                using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
-                    for(int i = 0; i < str1Array.Length; i++)
-                        if(i == 0)
-                            streamWriter.Write(str1Array[i]);
-                        else
-                            streamWriter.Write($"\n{str1Array[i]}");
-            }
-            else
-            {
-                string str1 = "";
-                using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
-                    str1 = streamReader.ReadToEnd();
-                string[] str1Array = str1.Split('\n');
-                str1Array[randomIDWord] = $"{randomIDWord + 1}: {correctItem}";
-                if (randomIDWord == 0)
-                    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
-                    {
-                        for (int i = 0; i < str1Array.Length; i++)
-                            if (counter2 == 0)
-                            {
-                                streamWriter.Write($"{str1Array[i]}");
-                                counter2++;
-                            }
-                            else
-                                streamWriter.Write($"\n{str1Array[i]}");
-                    }
-                else
-                    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
-                        for (int i = 0; i < str1Array.Length; i++)
-                            if(i == 0)
-                                streamWriter.Write($"{str1Array[i]}");
-                            else
-                                streamWriter.Write($"\n{str1Array[i]}");
-            }
-        }
-
-        // Метод запису кількості неправельних відповідей
-        private void WriteNumberOfUncorrectAnswers()
-        {
-            // приклад дроблення рядка в масив та запис як двох мірної таблиці
-            string str = $"{randomIDWord + 1}: {uncorrectItem}";
-            string[] strArray = str.Split(' ');
-            for (int i = 0; i < strArray.Length; i++)
-            {
-                if ((countWordsPosition % 2) != 0)
-                    richTextBox1.Text += $"{strArray[i]} ";
-                if ((countWordsPosition % 2) == 0)
-                    richTextBox1.Text += $"{strArray[i]}\n";
-                countWordsPosition++;
-            }
-        }
-
+        //---------------------------------------------------------------------------------------------------------
         private void MainWindowLocation()
         {
             Location = new System.Drawing.Point((screenSize.Width / 2) - (Size.Width / 2), 0);
         }
-
+        //---------------------------------------------------------------------------------------------------------
         // Метод встановлення кількості англійських слів у файлі
         private void SetIDWord()
         {
             using (StreamReader sr = new StreamReader(pathToSizeFile))
                 IDWords = Convert.ToInt32(sr.ReadLine());
         }
-
+        //---------------------------------------------------------------------------------------------------------
         // Метод створення директорії та неохідних файлів
         private void CreateDirectoryAndFiles()
         {
@@ -144,9 +88,9 @@ namespace For_English_Words
                     foreach (string words in defaultWords)
                     {
                         if (IDWords == 0)
-                            sw1.Write($"{words.ToUpper()}");
+                            sw1.Write($"{words.ToLower()}");
                         else
-                            sw1.Write($"\n{words.ToUpper()}");
+                            sw1.Write($"\n{words.ToLower()}");
                         IDWords++;
                     }
 
@@ -157,9 +101,9 @@ namespace For_English_Words
                     foreach (string translate in defaultTranslate) 
                     { 
                         if (IDTranslate == 0)
-                            sw2.Write($"{translate.ToUpper()}");
+                            sw2.Write($"{translate.ToLower()}");
                         else
-                            sw2.Write($"\n{translate.ToUpper()}");
+                            sw2.Write($"\n{translate.ToLower()}");
                         IDTranslate++;
                     }
 
@@ -189,9 +133,9 @@ namespace For_English_Words
 
             // Запис кількості слів у текстовий файл
             if (!File.Exists(pathToSizeFile))
-            SaveNumberOfSize();
+                SaveNumberOfSize();
         }
-
+        //---------------------------------------------------------------------------------------------------------
         // Метод створення файлу та запис кількості англійських слів
         public void SaveNumberOfSize()
         {
@@ -199,7 +143,7 @@ namespace For_English_Words
                 sw.Write($"{IDWords}");
             SetIDWord();
         }
-
+        //---------------------------------------------------------------------------------------------------------
         // Метод випадкової вибірки слова із списка 
         private void OutputRandomWord()
         {
@@ -211,7 +155,7 @@ namespace For_English_Words
             string[] wordsArray = stringWord.Split('\n');
             label3.Text = wordsArray[randomIDWord];
         }
-
+        //---------------------------------------------------------------------------------------------------------
         // Метод виводу відповідей 
         private void OutputAnswer()
         {
@@ -241,8 +185,11 @@ namespace For_English_Words
                     goto Deleting;
                 }
                 // запис у новий масив
-                newTranslateArray[countIter] = translateArray[i];
-                countIter++;
+                if (i < translateArray.Length)
+                {
+                    newTranslateArray[countIter] = translateArray[i]; // ?????????!!!!!!!!!!!!!
+                    countIter++;
+                }
                 // перевірка досягнутості кінця нового масиву
                 if (i == newTranslateArray.Length)
                 {
@@ -299,6 +246,70 @@ namespace For_English_Words
                     break;
             }
         }
+        //---------------------------------------------------------------------------------------------------------
+        // Метод запису кількості правельних відповідей
+        private void WriteNumberOfCorrectAnswers()
+        {
+            if (!File.Exists(pathToSwitchIndex))
+            {
+                using (FileStream fs = new FileStream(pathToSwitchIndex, FileMode.Create)) { };
+                string str1 = "";
+                using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
+                    str1 = streamReader.ReadToEnd();
+                string[] str1Array = str1.Split('\n');
+                str1Array[randomIDWord] = $"{randomIDWord + 1}: {correctItem}";
+                using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
+                    for (int i = 0; i < str1Array.Length; i++)
+                        if (i == 0)
+                            streamWriter.Write(str1Array[i]);
+                        else
+                            streamWriter.Write($"\n{str1Array[i]}");
+            }
+            else
+            {
+                string str1 = "";
+                using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
+                    str1 = streamReader.ReadToEnd();
+                string[] str1Array = str1.Split('\n');
+                str1Array[randomIDWord] = $"{randomIDWord + 1}: {correctItem}";
+                if (randomIDWord == 0)
+                    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
+                    {
+                        for (int i = 0; i < str1Array.Length; i++)
+                            if (counter2 == 0)
+                            {
+                                streamWriter.Write($"{str1Array[i]}");
+                                counter2++;
+                            }
+                            else
+                                streamWriter.Write($"\n{str1Array[i]}");
+                    }
+                else
+                    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
+                        for (int i = 0; i < str1Array.Length; i++)
+                            if (i == 0)
+                                streamWriter.Write($"{str1Array[i]}");
+                            else
+                                streamWriter.Write($"\n{str1Array[i]}");
+            }
+        }
+        //---------------------------------------------------------------------------------------------------------
+        // Метод запису кількості неправельних відповідей
+        private void WriteNumberOfUncorrectAnswers()
+        {
+            // приклад дроблення рядка в масив та запис як двох мірної таблиці
+            string str = $"{randomIDWord + 1}: {uncorrectItem}";
+            string[] strArray = str.Split(' ');
+            //for (int i = 0; i < strArray.Length; i++)
+            //{
+            //    if ((countWordsPosition % 2) != 0)
+            //        richTextBox1.Text += $"{strArray[i]} ";
+            //    if ((countWordsPosition % 2) == 0)
+            //        richTextBox1.Text += $"{strArray[i]}\n";
+            //    countWordsPosition++;
+            //}
+        }
+        //---------------------------------------------------------------------------------------------------------
         // Метод перевірки вірності відповіді
         private void CheckCorrectAnswer()
         {
@@ -376,22 +387,26 @@ namespace For_English_Words
             }
 
         }
-
+        // КОНТРОЛЕРИ
         //-------------------------------------------------------------------------------------------
-
         // Кнопка відповіді
         private void button2_Click(object sender, EventArgs e)
         {
             CheckCorrectAnswer();
         }
-
+        //---------------------------------------------------------------------------------------------------------
         // Кнопка налаштування
         private void button3_Click(object sender, EventArgs e)
         {
             settingsWindow.Show();
         }
-
-        
+        //---------------------------------------------------------------------------------------------------------
+        // Кнопка оновлення
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Repetition();
+        }
+        //---------------------------------------------------------------------------------------------------------
         // Close button
         private void button1_Click(object sender, EventArgs e)
         {
@@ -399,32 +414,3 @@ namespace For_English_Words
         }
     }
 }
-
-//// перетворення рядка в масив слів
-// string str = "hi I am a superman"
-//// поділ рядка по символу пробілу
-// string[] strArray = str.Split(' ');
-// foreach (var words in strArray)
-//      Console.WriteLine(words);
-
-//// запис всіх існуючих дисків у системі в список
-//DriveInfo[] ListDrives = DriveInfo.GetDrives();
-//foreach (DriveInfo driveInfo in ListDrives)
-//    if (driveInfo.IsReady)
-//        comboBox1.Items.Add(driveInfo.Name);
-//comboBox1.SelectedIndex = 0;
-
-
-//DialogResult messageResult = MessageBox.Show(
-//                "Do you want the program to run with Windows?",
-//                "Question",
-//                MessageBoxButtons.YesNo,
-//                MessageBoxIcon.Question);
-//if (messageResult == DialogResult.Yes)
-//{
-//    MessageBox.Show("You pressed the Yes button", "Random", MessageBoxButtons.OK);
-//}
-//else
-//{
-//    MessageBox.Show("You pressed the No button", "Random", MessageBoxButtons.OK);
-//}
