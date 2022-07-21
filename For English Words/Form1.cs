@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace For_English_Words
@@ -22,18 +21,20 @@ namespace For_English_Words
             pathToSwitchIndex = $@"C:\FEW\Switch index.mw",
             pathToSizeFile = $@"C:\FEW\Number of the words.mw";
 
-        string[] defaultWords = {"white","black","orange",
-            "blue","creen","red","brown","gray","pink",
-            "yellow","magenta","purple","maroon" },
+        string[] defaultWords = {
+            "white","black","orange","blue","green","red","brown","gray","pink","yellow","magenta","purple",
+            "maroon","advice","agree","urgently","continue","meet","rarely","colleagues","classmate","neighbors",
+            "husband","wife","get","expensive","perfectly","better","mistakes","effectively","take","useful"},
 
-            defaultTranslate = {"білий","чорний","помаранчевий",
-            "блакитний","зелений","червоний","коричневий","сірий","рожевий",
-            "жовтий","пурпурний","фіолетовий","бордовий"};
+            defaultTranslate = {
+            "білий","чорний","помаранчевий","блакитний","зелений","червоний","коричневий","сірий","рожевий",
+            "жовтий","пурпурний","фіолетовий","бордовий","порада","згоден","терміново","продовжити","зустріч",
+            "рідко","колеги","однокласник","сусіди","чоловік","дружина","отримувати","дорого","прекрасно",
+            "краще","помилки","ефективно","брати","корисно"};
 
-        // номер рядка слова
-        private int IDWords = 0, IDTranslate = 0, randomIDWord = 0, 
+        private int IDWords = 0, IDTranslate = 0, randomIDWord = 0,
             correctItem = 0, uncorrectItem = 0, countWordsPosition = 1,
-            counter2 = 0;
+            counter2 = 0, randomChoise = 0;
 
         public Form1()
         {
@@ -48,7 +49,7 @@ namespace For_English_Words
             SetIDWord();
             OutputRandomWord();
             OutputAnswer();
-            WriteNumberOfCorrectAnswers();
+            //WriteNumberOfCorrectAnswers();
         }
 
 
@@ -71,7 +72,6 @@ namespace For_English_Words
                             streamWriter.Write(str1Array[i]);
                         else
                             streamWriter.Write($"\n{str1Array[i]}");
-
             }
             else
             {
@@ -215,7 +215,6 @@ namespace For_English_Words
         // Метод виводу відповідей 
         private void OutputAnswer()
         {
-            using (FileStream fs3 = new FileStream(pathToRandomAsnwer,FileMode.Create)) { };
 
             string stringTranslate = "";
             // Запис перекладів слів у рядок
@@ -224,51 +223,93 @@ namespace For_English_Words
 
             // Перетворення рядка перекладів слів у масив
             string[] translateArray = stringTranslate.Split('\n');
-            // Запис відповідей у файл відповідей
-            using (StreamWriter sw1 = new StreamWriter(pathToRandomAsnwer, true)) // ???!!!!!!!!
+
+            // Запис парвельної відповіді у файл відповідей
+            using (StreamWriter sw = new StreamWriter(pathToRandomAsnwer))
+                sw.Write(translateArray[randomIDWord]);
+            // створення масиву для збереження масиву з видаленим значенням
+            string[] newTranslateArray = new string [translateArray.Length-1];
+            // лічильник для рахування кількості комірок нового масиву
+            int countIter = 0;
+            // цикл з перевіркою для видалення потрібної комірки
+            for (int i = 0; i < translateArray.Length; i++)
             {
-                if (randomIDWord == 0)
+                Deleting:
+                if (i == randomIDWord)
                 {
-                    sw1.WriteLine($"{translateArray[randomIDWord]}");
-                    sw1.WriteLine($"{translateArray[randomIDWord + 1]}");
-                    sw1.Write($"{translateArray[randomIDWord + 2]}");
+                    i++;
+                    goto Deleting;
                 }
-                if (randomIDWord == IDWords)
+                // запис у новий масив
+                newTranslateArray[countIter] = translateArray[i];
+                countIter++;
+                // перевірка досягнутості кінця нового масиву
+                if (i == newTranslateArray.Length)
                 {
-                    sw1.WriteLine($"{translateArray[randomIDWord-1]}");
-                    sw1.WriteLine($"{translateArray[randomIDWord - 2]}");
-                    sw1.Write($"{translateArray[randomIDWord - 3]}");
-                }
-                if(randomIDWord >=2 & randomIDWord < IDWords)
-                {
-                    sw1.WriteLine($"{translateArray[randomIDWord]}");
-                    sw1.WriteLine($"{translateArray[randomIDWord - 1]}");
-                    sw1.Write($"{translateArray[randomIDWord-2]}");
+                    break;
                 }
             }
-            // Запис відповідей із файла у рядок
-            string stringTranslate2 = "";
-            using (StreamReader sr2 = new StreamReader(pathToRandomAsnwer))
-                stringTranslate2 = sr2.ReadToEnd();
-            // Перетворення текстового рядку у масив
-            string[] translateArray2 = stringTranslate.Split('\n');
-            // Генерація випадкових неповторних чисел
-            random = new Random(DateTime.Now.Millisecond);
-            // Перемішування комірок в масиві
-            translateArray = translateArray.OrderBy(x => random.Next()).ToArray(); // ???!!!!!!!!
-            // Вивод відповідей
-            radioButton1.Text = translateArray[0];
-            radioButton2.Text = translateArray[1];
-            radioButton3.Text = translateArray[2];
+            // доповнює запис двома випадковими відповідями у файлі відповідей
+            using (StreamWriter sw = new StreamWriter(pathToRandomAsnwer, true))
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    sw.Write($"\n{newTranslateArray[random.Next(IDWords)]}");
+                }
+            }
+            // випадковий вибір варіанту перемішуваня відповідей
+            randomChoise = random.Next(6);
+            // запис відповідей з перезаписаного списку відповідей без правельної відповіді у текстовий рядок
+            using (StreamReader sr = new StreamReader(pathToRandomAsnwer))
+                stringTranslate = sr.ReadToEnd();
+            // перетворення рядку у масив
+            translateArray = stringTranslate.Split('\n');
+            // випадковий вибір перемішування відповідей
+            switch (randomChoise)
+            {
+                case 0:
+                    radioButton1.Text = translateArray[0];
+                    radioButton2.Text = translateArray[1];
+                    radioButton3.Text = translateArray[2];
+                    break;
+                case 1:
+                    radioButton1.Text = translateArray[1];
+                    radioButton2.Text = translateArray[0];
+                    radioButton3.Text = translateArray[2];
+                    break;
+                case 2:
+                    radioButton1.Text = translateArray[2];
+                    radioButton2.Text = translateArray[1];
+                    radioButton3.Text = translateArray[0];
+                    break;
+                case 3:
+                    radioButton1.Text = translateArray[0];
+                    radioButton2.Text = translateArray[2];
+                    radioButton3.Text = translateArray[1];
+                    break;
+                case 4:
+                    radioButton1.Text = translateArray[1];
+                    radioButton2.Text = translateArray[2];
+                    radioButton3.Text = translateArray[0];
+                    break;
+                case 5:
+                    radioButton1.Text = translateArray[2];
+                    radioButton2.Text = translateArray[0];
+                    radioButton3.Text = translateArray[1];
+                    break;
+            }
         }
-
+        // Метод перевірки вірності відповіді
         private void CheckCorrectAnswer()
         {
+            // створення пустого рядку
             string str1 = "";
+            // запис списку перекладів у рядок
             using (StreamReader sr4 = new StreamReader(pathToFileTranslate))
                 str1 = sr4.ReadToEnd();
+            // перетворення рядка у масив
             string[] corrAnswer = str1.Split('\n');
-
+            // перевірка вибору відповіді
             if (radioButton1.Checked)
             {
                 if (radioButton1.Text == corrAnswer[randomIDWord])
@@ -291,7 +332,6 @@ namespace For_English_Words
                 }
 
             }
-
             if (radioButton2.Checked)
             {
                 if (radioButton1.Text == corrAnswer[randomIDWord])
