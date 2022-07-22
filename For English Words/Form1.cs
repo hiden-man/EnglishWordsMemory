@@ -16,7 +16,6 @@ namespace For_English_Words
             pathToFileWords = $@"C:\FEW\English words.mw",
             pathToFileTranslate = $@"C:\FEW\Translate.mw",
             pathToCorecctAnswerFile = $@"C:\FEW\Counter of correct answer.mw",
-            pathToUncorrectAnswerFile = $@"C:\FEW\Counter of uncorrect answer.mw",
             pathToRandomAsnwer = $@"C:\FEW\Random answer.mw",
             pathToSwitchIndex = $@"C:\FEW\Switch index.mw",
             pathToSizeFile = $@"C:\FEW\Number of the words.mw";
@@ -38,7 +37,7 @@ namespace For_English_Words
 
         private int 
             IDWords = 0, IDTranslate = 0, randomIDWord = 0,
-            correctItem = 0, uncorrectItem = 0, randomChoise = 0;
+            correctItem = 0, randomChoise = 0;
         public Form1()
         {
             InitializeComponent();
@@ -58,7 +57,6 @@ namespace For_English_Words
             SetIDWord();
             OutputRandomWord();
             OutputAnswer();
-            //WriteNumberOfCorrectAnswers();
         }
         //---------------------------------------------------------------------------------------------------------
         private void MainWindowLocation()
@@ -108,16 +106,6 @@ namespace For_English_Words
                             sw3.Write($"{i+1}: {correctItem}");
                         else
                             sw3.Write($"\n{i+1}: {correctItem}");
-
-            // Створення файлу для невірних відповідей
-            if (!File.Exists(pathToUncorrectAnswerFile))
-                using (StreamWriter sw4 = new StreamWriter(pathToUncorrectAnswerFile))
-                    // нумерація комірок
-                    for (int i = 0; i < IDWords; i++)
-                        if (i == 0)
-                            sw4.Write($"{i+1}: {uncorrectItem}");
-                        else
-                            sw4.Write($"\n{i+1}: {uncorrectItem}");
 
             // Створення файлу для перемішування відповідей
             if (!File.Exists(pathToRandomAsnwer))
@@ -252,64 +240,162 @@ namespace For_English_Words
             if (!File.Exists(pathToSwitchIndex))
             {
                 using (FileStream fs = new FileStream(pathToSwitchIndex, FileMode.Create)) { };
-                string str1 = "";
+                string str1 = "", str2 = "";
                 using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
                     str1 = streamReader.ReadToEnd();
                 string[] str1Array = str1.Split('\n');
-                str1Array[randomIDWord] = $"{randomIDWord + 1}: {correctItem}";
-                using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
-                    for (int i = 0; i < str1Array.Length; i++)
-                        if (i == 0)
-                            streamWriter.Write(str1Array[i]);
-                        else
-                            streamWriter.Write($"\n{str1Array[i]}");
-            }
-            else
-            {
-                string str1 = "";
-                using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
-                    str1 = streamReader.ReadToEnd();
-                string[] str1Array = str1.Split('\n');
-                str1Array[randomIDWord] = $"{randomIDWord + 1}: {correctItem}";
-                if (randomIDWord == 0)
+
+                // запис у окремий рядок потрібної комірки
+                for (int i = 0; i < str1Array.GetLength(0); i++)
                 {
-                    int counter2 = 0;
-                    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
+                    // перевірка досягнутості потрібної комірки
+                    if (i == randomIDWord)
                     {
-                        for (int i = 0; i < str1Array.Length; i++)
-                            if (counter2 == 0)
-                            {
-                                streamWriter.Write($"{str1Array[i]}");
-                                counter2++;
-                            }
+                        // запис значень потрібної комірки у тексовий рядок
+                        str2 = str1Array[randomIDWord];
+                        // зупинка циклу
+                        break;
+                    }
+                    else
+                        // пропущення всіх інших комірок
+                        continue;
+                }
+                // запис другого рядка у окремий масив
+                string[] strArray2 = str2.Split(' ');
+                // конвертація вказаної комірки в числовий формат, зміна та запис у змінну числового типу
+                int digital = Convert.ToInt32(strArray2[1]) + 1;
+                // оновлення вказаної комірки
+                strArray2[1] = digital.ToString();
+                // цикл який проходить по всій довжині першого масиву
+                for (int i = 0; i < str1Array.GetLength(0); i++)
+                {
+                    // перевірка досягнутості потрібної комірки
+                    if (i != randomIDWord)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        // цикл який проходить по всій довжині другого масиву
+                        for (int j = 0; j < strArray2.GetLength(0); j++)
+                        {
+                            // перезапис потрібної комірки в першому масиві зміненою коміркою другого масиву
+                            if (j == 0)
+                                str1Array[i] = strArray2[j];
                             else
-                                streamWriter.Write($"\n{str1Array[i]}");
+                                str1Array[i] += $" {strArray2[j]}";
+                        }
                     }
                 }
-                else
-                    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
-                        for (int i = 0; i < str1Array.Length; i++)
-                            if (i == 0)
-                                streamWriter.Write($"{str1Array[i]}");
-                            else
-                                streamWriter.Write($"\n{str1Array[i]}");
+                using (StreamWriter sw = new StreamWriter(pathToCorecctAnswerFile))
+                {
+                    for (int i = 0; i < str1Array.GetLength(0); i++)
+                    {
+                        if (i == 0)
+                            sw.Write(str1Array[i]);
+                        else
+                            sw.Write($"\n{str1Array[i]}");
+                    }
+                }
             }
-        }
-        //---------------------------------------------------------------------------------------------------------
-        // Метод запису кількості неправельних відповідей
-        private void WriteNumberOfUncorrectAnswers()
-        {
-            // приклад дроблення рядка в масив та запис як двох мірної таблиці
-            string str = $"{randomIDWord + 1}: {uncorrectItem}";
-            string[] strArray = str.Split(' ');
-            //for (int i = 0; i < strArray.Length; i++)
-            //{
-            //    if ((countWordsPosition % 2) != 0)
-            //        richTextBox1.Text += $"{strArray[i]} ";
-            //    if ((countWordsPosition % 2) == 0)
-            //        richTextBox1.Text += $"{strArray[i]}\n";
-            //    countWordsPosition++;
-            //}
+            //--------------------------------------------------------------
+            else
+            {
+                string str1 = "", str2 = "";
+                using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
+                    str1 = streamReader.ReadToEnd();
+                string[] str1Array = str1.Split('\n');
+
+                // запис у окремий рядок потрібної комірки
+                for (int i = 0; i < str1Array.GetLength(0); i++)
+                {
+                    // перевірка досягнутості потрібної комірки
+                    if (i == randomIDWord)
+                    {
+                        // запис значень потрібної комірки у тексовий рядок
+                        str2 = str1Array[randomIDWord];
+                        // зупинка циклу
+                        break;
+                    }
+                    else
+                        // пропущення всіх інших комірок
+                        continue;
+                }
+                // запис другого рядка у окремий масив
+                string[] strArray2 = str2.Split(' ');
+                // конвертація вказаної комірки в числовий формат, зміна та запис у змінну числового типу
+                int digital = Convert.ToInt32(strArray2[1]) + 1;
+                // оновлення вказаної комірки
+                strArray2[1] = digital.ToString();
+                // цикл який проходить по всій довжині першого масиву
+                for (int i = 0; i < str1Array.GetLength(0); i++)
+                {
+                    // перевірка досягнутості потрібної комірки
+                    if (i != randomIDWord)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        // цикл який проходить по всій довжині другого масиву
+                        for (int j = 0; j < strArray2.GetLength(0); j++)
+                        {
+                            // перезапис потрібної комірки в першому масиві зміненою коміркою другого масиву
+                            if (j == 0)
+                                str1Array[i] = strArray2[j];
+                            else
+                                str1Array[i] += $" {strArray2[j]}";
+                        }
+                    }
+                }
+
+                using (StreamWriter sw = new StreamWriter(pathToCorecctAnswerFile))
+                {
+                    for (int i = 0; i < str1Array.GetLength(0); i++)
+                    {
+                        if (i == 0)
+                            sw.Write(str1Array[i]);
+                        else
+                            sw.Write($"\n{str1Array[i]}");
+                    }
+                }
+
+                //for (int i = 0; i < str1Array.GetLength(0); i++)
+                //{
+                //    if (i == 0)
+                //        richTextBox1.Text = str1Array[i];
+                //    else
+                //        richTextBox1.Text += $"\n{str1Array[i]}";
+                //}
+
+                //string str1 = "";
+                //using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
+                //    str1 = streamReader.ReadToEnd();
+                //string[] str1Array = str1.Split('\n');
+                //str1Array[randomIDWord] = $"{randomIDWord + 1}: {1}";
+                //if (randomIDWord == 0)
+                //{
+                //    int counter2 = 0;
+                //    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
+                //    {
+                //        for (int i = 0; i < str1Array.Length; i++)
+                //            if (counter2 == 0)
+                //            {
+                //                streamWriter.Write($"{str1Array[i]}");
+                //                counter2++;
+                //            }
+                //            else
+                //                streamWriter.Write($"\n{str1Array[i]}");
+                //    }
+                //}
+                //else
+                //    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
+                //        for (int i = 0; i < str1Array.Length; i++)
+                //            if (i == 0)
+                //                streamWriter.Write($"{str1Array[i]}");
+                //            else
+                //                streamWriter.Write($"\n{str1Array[i]}");
+            }
         }
         //---------------------------------------------------------------------------------------------------------
         // Метод перевірки вірності відповіді
@@ -392,9 +478,10 @@ namespace For_English_Words
         // КОНТРОЛЕРИ
         //-------------------------------------------------------------------------------------------
         // Кнопка відповіді
-        private void button2_Click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)
         {
             CheckCorrectAnswer();
+            WriteNumberOfCorrectAnswers();
         }
         //---------------------------------------------------------------------------------------------------------
         // Кнопка налаштування

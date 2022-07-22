@@ -13,8 +13,7 @@ namespace For_English_Words
         string pathToFileWords = $@"C:\FEW\English words.mw",
             pathToFileTranslate = $@"C:\FEW\Translate.mw",
             pathToSizeFile = $@"C:\FEW\Number of the words.mw",
-            pathToCorecctAnswerFile = $@"C:\FEW\Counter of correct answer.mw",
-            pathToUncorrectAnswerFile = $@"C:\FEW\Counter of uncorrect answer.mw";
+            pathToCorecctAnswerFile = $@"C:\FEW\Counter of correct answer.mw";
         private int IDWords = 0;
         public Settings()
         {
@@ -68,8 +67,6 @@ namespace For_English_Words
                 sw2.Write($"\n{textBox2.Text.ToLower()}");
             using (StreamWriter sw3 = new StreamWriter(pathToCorecctAnswerFile, true))
                 sw3.Write($"\n{IDWords}: {0}");
-            using (StreamWriter sw4 = new StreamWriter(pathToUncorrectAnswerFile, true))
-                sw4.Write($"\n{IDWords}: {0}");
             IDWords++;
             SaveNumberOfSize();
         }
