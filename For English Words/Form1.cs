@@ -38,8 +38,7 @@ namespace For_English_Words
 
         private int 
             IDWords = 0, IDTranslate = 0, randomIDWord = 0,
-            correctItem = 0, uncorrectItem = 0,
-            counter2 = 0, randomChoise = 0;
+            correctItem = 0, uncorrectItem = 0, randomChoise = 0;
         public Form1()
         {
             InitializeComponent();
@@ -49,7 +48,6 @@ namespace For_English_Words
         {
             MainWindowLocation();
             Repetition();
-            //WriteNumberOfCorrectAnswers();
         }
         // МЕТОДИ !!!!!
         //---------------------------------------------------------------------------------------------------------
@@ -60,18 +58,12 @@ namespace For_English_Words
             SetIDWord();
             OutputRandomWord();
             OutputAnswer();
+            //WriteNumberOfCorrectAnswers();
         }
         //---------------------------------------------------------------------------------------------------------
         private void MainWindowLocation()
         {
-            Location = new System.Drawing.Point((screenSize.Width / 2) - (Size.Width / 2), 0);
-        }
-        //---------------------------------------------------------------------------------------------------------
-        // Метод встановлення кількості англійських слів у файлі
-        private void SetIDWord()
-        {
-            using (StreamReader sr = new StreamReader(pathToSizeFile))
-                IDWords = Convert.ToInt32(sr.ReadLine());
+            Location = new Point((screenSize.Width / 2) - (Size.Width / 2), 0);
         }
         //---------------------------------------------------------------------------------------------------------
         // Метод створення директорії та неохідних файлів
@@ -144,6 +136,13 @@ namespace For_English_Words
             SetIDWord();
         }
         //---------------------------------------------------------------------------------------------------------
+        // Метод встановлення кількості англійських слів у файлі
+        private void SetIDWord()
+        {
+            using (StreamReader sr = new StreamReader(pathToSizeFile))
+                IDWords = Convert.ToInt32(sr.ReadLine());
+        }
+        //---------------------------------------------------------------------------------------------------------
         // Метод випадкової вибірки слова із списка 
         private void OutputRandomWord()
         {
@@ -201,7 +200,7 @@ namespace For_English_Words
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    sw.Write($"\n{newTranslateArray[random.Next(IDWords)]}");
+                    sw.Write($"\n{newTranslateArray[random.Next(IDWords-1)]}");
                 }
             }
             // випадковий вибір варіанту перемішуваня відповідей
@@ -273,6 +272,8 @@ namespace For_English_Words
                 string[] str1Array = str1.Split('\n');
                 str1Array[randomIDWord] = $"{randomIDWord + 1}: {correctItem}";
                 if (randomIDWord == 0)
+                {
+                    int counter2 = 0;
                     using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
                     {
                         for (int i = 0; i < str1Array.Length; i++)
@@ -284,6 +285,7 @@ namespace For_English_Words
                             else
                                 streamWriter.Write($"\n{str1Array[i]}");
                     }
+                }
                 else
                     using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
                         for (int i = 0; i < str1Array.Length; i++)
@@ -404,6 +406,12 @@ namespace For_English_Words
         // Кнопка оновлення
         private void button4_Click(object sender, EventArgs e)
         {
+            radioButton1.ForeColor = Color.RosyBrown;
+            radioButton2.ForeColor = Color.RosyBrown;
+            radioButton3.ForeColor = Color.RosyBrown;
+            radioButton1.Checked = false;
+            radioButton2.Checked = false;
+            radioButton3.Checked = false;
             Repetition();
         }
         //---------------------------------------------------------------------------------------------------------
