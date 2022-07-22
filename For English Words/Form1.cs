@@ -348,7 +348,6 @@ namespace For_English_Words
                         }
                     }
                 }
-
                 using (StreamWriter sw = new StreamWriter(pathToCorecctAnswerFile))
                 {
                     for (int i = 0; i < str1Array.GetLength(0); i++)
@@ -359,42 +358,6 @@ namespace For_English_Words
                             sw.Write($"\n{str1Array[i]}");
                     }
                 }
-
-                //for (int i = 0; i < str1Array.GetLength(0); i++)
-                //{
-                //    if (i == 0)
-                //        richTextBox1.Text = str1Array[i];
-                //    else
-                //        richTextBox1.Text += $"\n{str1Array[i]}";
-                //}
-
-                //string str1 = "";
-                //using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
-                //    str1 = streamReader.ReadToEnd();
-                //string[] str1Array = str1.Split('\n');
-                //str1Array[randomIDWord] = $"{randomIDWord + 1}: {1}";
-                //if (randomIDWord == 0)
-                //{
-                //    int counter2 = 0;
-                //    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
-                //    {
-                //        for (int i = 0; i < str1Array.Length; i++)
-                //            if (counter2 == 0)
-                //            {
-                //                streamWriter.Write($"{str1Array[i]}");
-                //                counter2++;
-                //            }
-                //            else
-                //                streamWriter.Write($"\n{str1Array[i]}");
-                //    }
-                //}
-                //else
-                //    using (StreamWriter streamWriter = new StreamWriter(pathToCorecctAnswerFile))
-                //        for (int i = 0; i < str1Array.Length; i++)
-                //            if (i == 0)
-                //                streamWriter.Write($"{str1Array[i]}");
-                //            else
-                //                streamWriter.Write($"\n{str1Array[i]}");
             }
         }
         //---------------------------------------------------------------------------------------------------------
