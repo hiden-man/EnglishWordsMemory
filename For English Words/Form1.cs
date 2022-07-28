@@ -103,9 +103,9 @@ namespace For_English_Words
                     // нумерація комірок
                     for (int i = 0; i < IDWords; i++)
                         if (i == 0)
-                            sw3.Write($"{i+1}: {correctItem}");
+                            sw3.Write(correctItem);
                         else
-                            sw3.Write($"\n{i+1}: {correctItem}");
+                            sw3.Write($"\n{correctItem}");
 
             // Створення файлу для перемішування відповідей
             if (!File.Exists(pathToRandomAsnwer))
@@ -134,11 +134,10 @@ namespace For_English_Words
         // Метод випадкової вибірки слова із списка 
         private void OutputRandomWord()
         {
+            randomIDWord = random.Next(IDWords);
             string stringWord = "";
-
             using (StreamReader sr1 = new StreamReader(pathToFileWords))
                 stringWord = sr1.ReadToEnd();
-            randomIDWord = random.Next(IDWords);
             string[] wordsArray = stringWord.Split('\n');
             label3.Text = wordsArray[randomIDWord];
         }
@@ -174,7 +173,7 @@ namespace For_English_Words
                 // запис у новий масив
                 if (i < translateArray.Length)
                 {
-                    newTranslateArray[countIter] = translateArray[i]; // ?????????!!!!!!!!!!!!!
+                    newTranslateArray[countIter] = translateArray[i];
                     countIter++;
                 }
                 // перевірка досягнутості кінця нового масиву
@@ -240,124 +239,109 @@ namespace For_English_Words
             if (!File.Exists(pathToSwitchIndex))
             {
                 using (FileStream fs = new FileStream(pathToSwitchIndex, FileMode.Create)) { };
-                string str1 = "", str2 = "";
+
+                string str1 = "";
                 using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
                     str1 = streamReader.ReadToEnd();
                 string[] str1Array = str1.Split('\n');
+                int diNumber = int.Parse(str1Array[randomIDWord]) + 1;
+                str1Array[randomIDWord] = diNumber.ToString();
 
-                // запис у окремий рядок потрібної комірки
-                for (int i = 0; i < str1Array.GetLength(0); i++)
-                {
-                    // перевірка досягнутості потрібної комірки
-                    if (i == randomIDWord)
-                    {
-                        // запис значень потрібної комірки у тексовий рядок
-                        str2 = str1Array[randomIDWord];
-                        // зупинка циклу
-                        break;
-                    }
-                    else
-                        // пропущення всіх інших комірок
-                        continue;
-                }
-                // запис другого рядка у окремий масив
-                string[] strArray2 = str2.Split(' ');
-                // конвертація вказаної комірки в числовий формат, зміна та запис у змінну числового типу
-                int digital = Convert.ToInt32(strArray2[1]) + 1;
-                // оновлення вказаної комірки
-                strArray2[1] = digital.ToString();
-                // цикл який проходить по всій довжині першого масиву
-                for (int i = 0; i < str1Array.GetLength(0); i++)
-                {
-                    // перевірка досягнутості потрібної комірки
-                    if (i != randomIDWord)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        // цикл який проходить по всій довжині другого масиву
-                        for (int j = 0; j < strArray2.GetLength(0); j++)
-                        {
-                            // перезапис потрібної комірки в першому масиві зміненою коміркою другого масиву
-                            if (j == 0)
-                                str1Array[i] = strArray2[j];
-                            else
-                                str1Array[i] += $" {strArray2[j]}";
-                        }
-                    }
-                }
+                //    
+                //    // запис другого рядка у окремий масив
+                //    string[] strArray2 = str2.Split(' ');
+                //    // конвертація вказаної комірки в числовий формат, зміна та запис у змінну числового типу
+                //    int digital = Convert.ToInt32(strArray2[1]) + 1;
+                //    // оновлення вказаної комірки
+                //    strArray2[1] = digital.ToString();
+                //    // цикл який проходить по всій довжині першого масиву
+                //    for (int i = 0; i < str1Array.GetLength(0); i++)
+                //    {
+                //        // перевірка досягнутості потрібної комірки
+                //        if (i != randomIDWord)
+                //        {
+                //            continue;
+                //        }
+                //        else
+                //        {
+                //            // цикл який проходить по всій довжині другого масиву
+                //            for (int j = 0; j < strArray2.GetLength(0); j++)
+                //            {
+                //                // перезапис потрібної комірки в першому масиві зміненою коміркою другого масиву
+                //                if (j == 0)
+                //                    str1Array[i] = strArray2[j];
+                //                else
+                //                    str1Array[i] += $" {strArray2[j]}";
+                //            }
+                //        }
+                //    }
                 using (StreamWriter sw = new StreamWriter(pathToCorecctAnswerFile))
                 {
                     for (int i = 0; i < str1Array.GetLength(0); i++)
-                    {
                         if (i == 0)
                             sw.Write(str1Array[i]);
                         else
                             sw.Write($"\n{str1Array[i]}");
-                    }
                 }
             }
             //--------------------------------------------------------------
             else
             {
-                string str1 = "", str2 = "";
+                string str1 = "";
                 using (StreamReader streamReader = new StreamReader(pathToCorecctAnswerFile))
                     str1 = streamReader.ReadToEnd();
                 string[] str1Array = str1.Split('\n');
+                int diNumber = int.Parse(str1Array[randomIDWord]) + 1;
+                str1Array[randomIDWord] = diNumber.ToString();
 
-                // запис у окремий рядок потрібної комірки
-                for (int i = 0; i < str1Array.GetLength(0); i++)
-                {
-                    // перевірка досягнутості потрібної комірки
-                    if (i == randomIDWord)
-                    {
-                        // запис значень потрібної комірки у тексовий рядок
-                        str2 = str1Array[randomIDWord];
-                        // зупинка циклу
-                        break;
-                    }
-                    else
-                        // пропущення всіх інших комірок
-                        continue;
-                }
-                // запис другого рядка у окремий масив
-                string[] strArray2 = str2.Split(' ');
-                // конвертація вказаної комірки в числовий формат, зміна та запис у змінну числового типу
-                int digital = Convert.ToInt32(strArray2[1]) + 1;
-                // оновлення вказаної комірки
-                strArray2[1] = digital.ToString();
-                // цикл який проходить по всій довжині першого масиву
-                for (int i = 0; i < str1Array.GetLength(0); i++)
-                {
-                    // перевірка досягнутості потрібної комірки
-                    if (i != randomIDWord)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        // цикл який проходить по всій довжині другого масиву
-                        for (int j = 0; j < strArray2.GetLength(0); j++)
-                        {
-                            // перезапис потрібної комірки в першому масиві зміненою коміркою другого масиву
-                            if (j == 0)
-                                str1Array[i] = strArray2[j];
-                            else
-                                str1Array[i] += $" {strArray2[j]}";
-                        }
-                    }
-                }
+                //// запис у окремий рядок потрібної комірки
+                //for (int i = 0; i < str1Array.GetLength(0); i++)
+                //{
+                //    // перевірка досягнутості потрібної комірки
+                //    if (i == randomIDWord)
+                //    {
+                //        // запис значень потрібної комірки у тексовий рядок
+                //        str2 = str1Array[randomIDWord];
+                //        // зупинка циклу
+                //        break;
+                //    }
+                //    else
+                //        // пропущення всіх інших комірок
+                //        continue;
+                //}
+                //// запис другого рядка у окремий масив
+                //string[] strArray2 = str2.Split(' ');
+                //// конвертація вказаної комірки в числовий формат, зміна та запис у змінну числового типу
+                //int digital = Convert.ToInt32(strArray2[1]) + 1;
+                //// оновлення вказаної комірки
+                //strArray2[1] = digital.ToString();
+                //// цикл який проходить по всій довжині першого масиву
+                //for (int i = 0; i < str1Array.GetLength(0); i++)
+                //{
+                //    // перевірка досягнутості потрібної комірки
+                //    if (i != randomIDWord)
+                //    {
+                //        continue;
+                //    }
+                //    else
+                //    {
+                //        // цикл який проходить по всій довжині другого масиву
+                //        for (int j = 0; j < strArray2.GetLength(0); j++)
+                //        {
+                //            // перезапис потрібної комірки в першому масиві зміненою коміркою другого масиву
+                //            if (j == 0)
+                //                str1Array[i] = strArray2[j];
+                //            else
+                //                str1Array[i] += $" {strArray2[j]}";
+                //        }
+                //    }
+                //}
                 using (StreamWriter sw = new StreamWriter(pathToCorecctAnswerFile))
-                {
                     for (int i = 0; i < str1Array.GetLength(0); i++)
-                    {
                         if (i == 0)
                             sw.Write(str1Array[i]);
                         else
                             sw.Write($"\n{str1Array[i]}");
-                    }
-                }
             }
         }
         //---------------------------------------------------------------------------------------------------------
@@ -380,7 +364,7 @@ namespace For_English_Words
                     radioButton2.ForeColor = Color.Red;
                     radioButton3.ForeColor = Color.Red;
                 }
-                if(radioButton2.Text == corrAnswer[randomIDWord])
+                if (radioButton2.Text == corrAnswer[randomIDWord])
                 {
                     radioButton1.ForeColor = Color.Red;
                     radioButton2.ForeColor = Color.LimeGreen;
@@ -436,7 +420,6 @@ namespace For_English_Words
                     radioButton2.ForeColor = Color.Red;
                 }
             }
-
         }
         // КОНТРОЛЕРИ
         //-------------------------------------------------------------------------------------------
