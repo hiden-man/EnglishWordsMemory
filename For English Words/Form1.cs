@@ -46,6 +46,8 @@ namespace For_English_Words
         private void Form1_Load(object sender, EventArgs e)
         {
             MainWindowLocation();
+            CreateDirectoryAndFiles();
+            RecountTheNumberOfWords();
             Repetition();
         }
         // МЕТОДИ !!!!!
@@ -53,7 +55,6 @@ namespace For_English_Words
         // Метод повтору
         private void Repetition()
         {
-            CreateDirectoryAndFiles();
             SetIDWord();
             OutputRandomWord();
             OutputAnswer();
@@ -116,6 +117,17 @@ namespace For_English_Words
                 SaveNumberOfSize();
         }
         //---------------------------------------------------------------------------------------------------------
+        // Метод перераховування кількості слів при повторному відкритті программи
+        private void RecountTheNumberOfWords()
+        {
+            string strRecount = "";
+            using (StreamReader sr = new StreamReader(pathToFileWords))
+                strRecount = sr.ReadToEnd();
+            string[] strRecountArray = strRecount.Split('\n');
+            for (int i = 0; i < strRecountArray.GetLength(0); i++)
+                IDWords++;
+        }
+        //---------------------------------------------------------------------------------------------------------
         // Метод створення файлу та запис кількості англійських слів
         public void SaveNumberOfSize()
         {
@@ -135,6 +147,147 @@ namespace For_English_Words
         private void OutputRandomWord()
         {
             randomIDWord = random.Next(IDWords);
+
+            // Рядок для запису даних із текстового файлу
+            string strCorNum = "";
+            // Читаємо данні з файлу
+            using (StreamReader sr = new StreamReader(pathToCorecctAnswerFile))
+                // Записуємо дані з файлу у текстовий рядок
+                strCorNum = sr.ReadToEnd();
+            // перетворюємо текстовий рядок у масив
+            string[] strCorNumArray = strCorNum.Split('\n');
+            // цикл для проходу по всій довжині масиву
+            for (int i = 0; i < strCorNumArray.Length; i++)
+            {
+                // перевірка досягнутості потрібної комарки масиву
+                if (i == randomIDWord)
+                {
+                    int sizeNumber = 0;
+                    // корнвертація текстових даних у числові
+                    int digCorNum = Convert.ToInt32(strCorNumArray[randomIDWord]);
+                    // перевірка рівнозначності числа
+                    if (digCorNum >= 1)
+                    {
+                        // створення масиву для видаленя потрібної комірки
+                        string[] shortStrCorNum = new string[strCorNumArray.Length - 1];
+                        // лічильник ітерацій циклу для проходу по іншому масиву
+                        int countCorNum = 0;
+                        // цикл для проходу по іншому масиву
+                        for (int j = 0; j < strCorNumArray.Length; j++)
+                        {
+                        // маркер для переходу оператора Goto
+                        Deleting:
+                            // перевірки досягнутості потрібної комірки
+                            if (j != randomIDWord)
+                            {
+                                // запис інших комірок без змін
+                                shortStrCorNum[countCorNum] = strCorNumArray[j];
+                                countCorNum++;
+                            }
+                            // видаленя потрібної комірки
+                            if (j == randomIDWord)
+                            {
+                                j++;
+                                goto Deleting;
+                            }
+                            // перевірка досягнутості кінця другого масиву
+                            if (j == shortStrCorNum.Length)
+                            {
+                                break;
+                            }
+                        }
+                        using (StreamWriter sw = new StreamWriter(pathToCorecctAnswerFile))
+                        {
+                            for (int t = 0; t < shortStrCorNum.Length; t++)
+                            {
+                                if (t == 0)
+                                    sw.Write($"{shortStrCorNum[t]}");
+                                else
+                                {
+                                    sw.Write($"\n{shortStrCorNum[t]}");
+                                }
+                                sizeNumber++;
+                            }
+                        }
+                        //---------------------------------------------------------------
+                        string str11 = "";
+                        using (StreamReader sr = new StreamReader(pathToFileWords))
+                            str11 = sr.ReadToEnd();
+                        string[] strWorNumArray = str11.Split('\n');
+                        string[] shortStrWorNumArray = new string[strWorNumArray.Length - 1];
+                        int countWorNum = 0;
+                        for (int e = 0; e < strWorNumArray.Length; e++)
+                        {
+                        Deleting:
+                            if (e != randomIDWord)
+                            {
+                                shortStrWorNumArray[countWorNum] = strWorNumArray[e];
+                                countWorNum++;
+                            }
+                            if (e == randomIDWord)
+                            {
+                                e++;
+                                goto Deleting;
+                            }
+                            if (e == shortStrWorNumArray.Length)
+                            {
+                                break;
+                            }
+                        }
+                        using (StreamWriter sw = new StreamWriter(pathToFileWords))
+                        {
+                            for (int y = 0; y < shortStrWorNumArray.Length; y++)
+                            {
+                                if (y == 0)
+                                    sw.Write($"{shortStrWorNumArray[y]}");
+                                else
+                                    sw.Write($"\n{shortStrWorNumArray[y]}");
+                            }
+                        }
+                        //---------------------------------------------------------------
+                        string str22 = "";
+                        using (StreamReader sr = new StreamReader(pathToFileTranslate))
+                            str22 = sr.ReadToEnd();
+                        string[] strTraNumArray = str22.Split('\n');
+                        string[] shortStrTraNumArray = new string[strTraNumArray.Length - 1];
+                        int countTraNum = 0;
+                        for (int g = 0; g < strTraNumArray.Length; g++)
+                        {
+                        Deleting:
+                            if (g != randomIDWord)
+                            {
+                                shortStrTraNumArray[countTraNum] = strTraNumArray[g];
+                                countTraNum++;
+                            }
+                            if (g == randomIDWord)
+                            {
+                                g++;
+                                goto Deleting;
+                            }
+                            if (g == shortStrTraNumArray.Length)
+                            {
+                                break;
+                            }
+                        }
+                        using (StreamWriter sw = new StreamWriter(pathToFileTranslate))
+                        {
+                            for (int f = 0; f < shortStrTraNumArray.Length; f++)
+                            {
+                                if (f == 0)
+                                    sw.Write($"{shortStrTraNumArray[f]}");
+                                else
+                                    sw.Write($"\n{shortStrTraNumArray[f]}");
+                            }
+                        }
+                        //---------------------------------------------------------------
+                        using (StreamWriter sw = new StreamWriter(pathToSizeFile))
+                            sw.Write(sizeNumber);
+                        // ТЕСТ ВІРНОСТІ РОБОТИ
+                        textBox1.Text = "Success";
+                    }
+                }
+            }
+
             string stringWord = "";
             using (StreamReader sr1 = new StreamReader(pathToFileWords))
                 stringWord = sr1.ReadToEnd();
@@ -287,70 +440,34 @@ namespace For_English_Words
             if (radioButton1.Checked)
             {
                 if (radioButton1.Text == corrAnswer[randomIDWord])
-                {
-                    radioButton1.ForeColor = Color.LimeGreen;
-                    radioButton2.ForeColor = Color.Red;
-                    radioButton3.ForeColor = Color.Red;
-                }
+                    pictureBox1.Visible = true;
                 if (radioButton2.Text == corrAnswer[randomIDWord])
-                {
-                    radioButton1.ForeColor = Color.Red;
-                    radioButton2.ForeColor = Color.LimeGreen;
-                    radioButton3.ForeColor = Color.Red;
-                }
+                    pictureBox2.Visible = true;
                 if (radioButton3.Text == corrAnswer[randomIDWord])
-                {
-                    radioButton1.ForeColor = Color.Red;
-                    radioButton3.ForeColor = Color.LimeGreen;
-                    radioButton2.ForeColor = Color.Red;
-                }
+                    pictureBox3.Visible = true;
 
             }
             if (radioButton2.Checked)
             {
                 if (radioButton1.Text == corrAnswer[randomIDWord])
-                {
-                    radioButton1.ForeColor = Color.LimeGreen;
-                    radioButton2.ForeColor = Color.Red;
-                    radioButton3.ForeColor = Color.Red;
-                }
+                    pictureBox1.Visible = true;
                 if (radioButton2.Text == corrAnswer[randomIDWord])
-                {
-                    radioButton1.ForeColor = Color.Red;
-                    radioButton2.ForeColor = Color.LimeGreen;
-                    radioButton3.ForeColor = Color.Red;
-                }
+                    pictureBox2.Visible = true;
                 if (radioButton3.Text == corrAnswer[randomIDWord])
-                {
-                    radioButton1.ForeColor = Color.Red;
-                    radioButton3.ForeColor = Color.LimeGreen;
-                    radioButton2.ForeColor = Color.Red;
-                }
+                    pictureBox3.Visible = true;
             }
             if (radioButton3.Checked)
             {
                 if (radioButton1.Text == corrAnswer[randomIDWord])
-                {
-                    radioButton1.ForeColor = Color.LimeGreen;
-                    radioButton2.ForeColor = Color.Red;
-                    radioButton3.ForeColor = Color.Red;
-                }
+                    pictureBox1.Visible = true;
                 if (radioButton2.Text == corrAnswer[randomIDWord])
-                {
-                    radioButton1.ForeColor = Color.Red;
-                    radioButton2.ForeColor = Color.LimeGreen;
-                    radioButton3.ForeColor = Color.Red;
-                }
+                    pictureBox2.Visible = true;
                 if (radioButton3.Text == corrAnswer[randomIDWord])
-                {
-                    radioButton1.ForeColor = Color.Red;
-                    radioButton3.ForeColor = Color.LimeGreen;
-                    radioButton2.ForeColor = Color.Red;
-                }
+                    pictureBox3.Visible = true;
             }
         }
         // КОНТРОЛЕРИ
-        //-------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------
         // Кнопка відповіді
         private void button5_Click(object sender, EventArgs e)
         {
@@ -373,6 +490,11 @@ namespace For_English_Words
             radioButton1.Checked = false;
             radioButton2.Checked = false;
             radioButton3.Checked = false;
+            pictureBox1.Visible = false;
+            pictureBox2.Visible = false;
+            pictureBox3.Visible = false;
+            // ТЕСТ ВІРНОСТІ РОБОТИ
+            textBox1.Text = "";
             Repetition();
         }
         //---------------------------------------------------------------------------------------------------------
