@@ -246,35 +246,6 @@ namespace For_English_Words
                 string[] str1Array = str1.Split('\n');
                 int diNumber = int.Parse(str1Array[randomIDWord]) + 1;
                 str1Array[randomIDWord] = diNumber.ToString();
-
-                //    
-                //    // запис другого рядка у окремий масив
-                //    string[] strArray2 = str2.Split(' ');
-                //    // конвертація вказаної комірки в числовий формат, зміна та запис у змінну числового типу
-                //    int digital = Convert.ToInt32(strArray2[1]) + 1;
-                //    // оновлення вказаної комірки
-                //    strArray2[1] = digital.ToString();
-                //    // цикл який проходить по всій довжині першого масиву
-                //    for (int i = 0; i < str1Array.GetLength(0); i++)
-                //    {
-                //        // перевірка досягнутості потрібної комірки
-                //        if (i != randomIDWord)
-                //        {
-                //            continue;
-                //        }
-                //        else
-                //        {
-                //            // цикл який проходить по всій довжині другого масиву
-                //            for (int j = 0; j < strArray2.GetLength(0); j++)
-                //            {
-                //                // перезапис потрібної комірки в першому масиві зміненою коміркою другого масиву
-                //                if (j == 0)
-                //                    str1Array[i] = strArray2[j];
-                //                else
-                //                    str1Array[i] += $" {strArray2[j]}";
-                //            }
-                //        }
-                //    }
                 using (StreamWriter sw = new StreamWriter(pathToCorecctAnswerFile))
                 {
                     for (int i = 0; i < str1Array.GetLength(0); i++)
@@ -293,49 +264,6 @@ namespace For_English_Words
                 string[] str1Array = str1.Split('\n');
                 int diNumber = int.Parse(str1Array[randomIDWord]) + 1;
                 str1Array[randomIDWord] = diNumber.ToString();
-
-                //// запис у окремий рядок потрібної комірки
-                //for (int i = 0; i < str1Array.GetLength(0); i++)
-                //{
-                //    // перевірка досягнутості потрібної комірки
-                //    if (i == randomIDWord)
-                //    {
-                //        // запис значень потрібної комірки у тексовий рядок
-                //        str2 = str1Array[randomIDWord];
-                //        // зупинка циклу
-                //        break;
-                //    }
-                //    else
-                //        // пропущення всіх інших комірок
-                //        continue;
-                //}
-                //// запис другого рядка у окремий масив
-                //string[] strArray2 = str2.Split(' ');
-                //// конвертація вказаної комірки в числовий формат, зміна та запис у змінну числового типу
-                //int digital = Convert.ToInt32(strArray2[1]) + 1;
-                //// оновлення вказаної комірки
-                //strArray2[1] = digital.ToString();
-                //// цикл який проходить по всій довжині першого масиву
-                //for (int i = 0; i < str1Array.GetLength(0); i++)
-                //{
-                //    // перевірка досягнутості потрібної комірки
-                //    if (i != randomIDWord)
-                //    {
-                //        continue;
-                //    }
-                //    else
-                //    {
-                //        // цикл який проходить по всій довжині другого масиву
-                //        for (int j = 0; j < strArray2.GetLength(0); j++)
-                //        {
-                //            // перезапис потрібної комірки в першому масиві зміненою коміркою другого масиву
-                //            if (j == 0)
-                //                str1Array[i] = strArray2[j];
-                //            else
-                //                str1Array[i] += $" {strArray2[j]}";
-                //        }
-                //    }
-                //}
                 using (StreamWriter sw = new StreamWriter(pathToCorecctAnswerFile))
                     for (int i = 0; i < str1Array.GetLength(0); i++)
                         if (i == 0)
