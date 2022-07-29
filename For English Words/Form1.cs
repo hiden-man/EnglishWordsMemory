@@ -140,7 +140,7 @@ namespace For_English_Words
         private void SetIDWord()
         {
             using (StreamReader sr = new StreamReader(pathToSizeFile))
-                IDWords = Convert.ToInt32(sr.ReadLine());
+                IDWords = Convert.ToInt32(sr.ReadToEnd());
         }
         //---------------------------------------------------------------------------------------------------------
         // Метод випадкової вибірки слова із списка 
@@ -166,7 +166,7 @@ namespace For_English_Words
                     // корнвертація текстових даних у числові
                     int digCorNum = Convert.ToInt32(strCorNumArray[randomIDWord]);
                     // перевірка рівнозначності числа
-                    if (digCorNum >= 1)
+                    if (digCorNum >= 100)
                     {
                         // створення масиву для видаленя потрібної комірки
                         string[] shortStrCorNum = new string[strCorNumArray.Length - 1];
