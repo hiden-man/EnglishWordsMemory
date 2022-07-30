@@ -34,22 +34,31 @@ namespace For_English_Words
             if (listBox1.SelectedIndex == 0)
             {
                 label1.Text = "1";
+                panel1.Visible = true;
             }
             if (listBox1.SelectedIndex == 1)
             {
-                label1.Text = "2";
+                label2.Text = "2";
+                panel1.Visible = false;
+                panel2.Visible = true;
             }
             if (listBox1.SelectedIndex == 2)
             {
-                label1.Text = "3";
+                label3.Text = "3";
+                panel2.Visible = false;
+                panel3.Visible = true;
             }
             if (listBox1.SelectedIndex == 3)
             {
-                label1.Text = "4";
+                label4.Text = "4";
+                panel3.Visible = false;
+                panel4.Visible = true;
             }
             if (listBox1.SelectedIndex == 4)
             {
-                label1.Text = "5";
+                label5.Text = "5";
+                panel3.Visible= false;
+                panel4.Visible = true;
             }
 
         }
