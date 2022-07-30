@@ -10,7 +10,8 @@ namespace For_English_Words
         // Поля
         Size screenSize = Screen.PrimaryScreen.Bounds.Size;
         Random random = new Random();
-        Settings settingsWindow = new Settings();
+        AddNewWord AddNewWordWindow = new AddNewWord();
+        SettingsWindow settingsWindow = new SettingsWindow();
 
         string defaultPath = @"C:\FEW",
             pathToFileWords = $@"C:\FEW\English words.mw",
@@ -282,8 +283,6 @@ namespace For_English_Words
                         //---------------------------------------------------------------
                         using (StreamWriter sw = new StreamWriter(pathToSizeFile))
                             sw.Write(sizeNumber);
-                        // ТЕСТ ВІРНОСТІ РОБОТИ
-                        textBox1.Text = "Success";
                     }
                 }
             }
@@ -468,6 +467,26 @@ namespace For_English_Words
         }
         // КОНТРОЛЕРИ
         //---------------------------------------------------------------------------------------------------------
+        // Кнопка відкриття меню
+        private void button6_Click(object sender, EventArgs e)
+        {
+            panel1.Location = new Point(0, 0);
+            panel1.Visible = true;
+        }
+        //---------------------------------------------------------------------------------------------------------
+        // Кнопка закриття меню
+        private void button7_Click(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+        }
+        //---------------------------------------------------------------------------------------------------------
+        // Кнопка відкриття налаштувань
+        private void button2_Click(object sender, EventArgs e)
+        {
+            settingsWindow.Show();
+        }
+
+        //---------------------------------------------------------------------------------------------------------
         // Кнопка відповіді
         private void button5_Click(object sender, EventArgs e)
         {
@@ -475,10 +494,10 @@ namespace For_English_Words
             WriteNumberOfCorrectAnswers();
         }
         //---------------------------------------------------------------------------------------------------------
-        // Кнопка налаштування
+        // Кнопка додавання нових слів
         private void button3_Click(object sender, EventArgs e)
         {
-            settingsWindow.Show();
+            AddNewWordWindow.Show();
         }
         //---------------------------------------------------------------------------------------------------------
         // Кнопка оновлення
@@ -493,8 +512,6 @@ namespace For_English_Words
             pictureBox1.Visible = false;
             pictureBox2.Visible = false;
             pictureBox3.Visible = false;
-            // ТЕСТ ВІРНОСТІ РОБОТИ
-            textBox1.Text = "";
             Repetition();
         }
         //---------------------------------------------------------------------------------------------------------

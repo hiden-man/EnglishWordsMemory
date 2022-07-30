@@ -10,4 +10,5 @@ D:\C#_Code_Sources\For English Words\For English Words\obj\Debug\For English Wor
 D:\C#_Code_Sources\For English Words\For English Words\obj\Debug\For English Words.exe
 D:\C#_Code_Sources\For English Words\For English Words\obj\Debug\For English Words.pdb
 D:\C#_Code_Sources\For English Words\For English Words\obj\Debug\For English Words.csproj.ResolveComReference.cache
-D:\C#_Code_Sources\For English Words\For English Words\obj\Debug\For_English_Words.Settings.resources
+D:\C#_Code_Sources\For English Words\For English Words\obj\Debug\For_English_Words.AddNewWord.resources
+D:\C#_Code_Sources\For English Words\For English Words\obj\Debug\For_English_Words.SettingsWindow.resources
